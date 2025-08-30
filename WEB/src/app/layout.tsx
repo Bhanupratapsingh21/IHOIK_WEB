@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: 'https://res.cloudinary.com/djwzwq4cu/image/upload/v1756569005/505741758_18330309811162334_2253254708631389546_n_pjujvy.jpg',
         width: 1200,
         height: 675,
         alt: siteDetails.siteName,
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteDetails.metadata.title,
     description: siteDetails.metadata.description,
-    images: ['/images/twitter-image.jpg'],
+    images: ['https://res.cloudinary.com/djwzwq4cu/image/upload/v1756569005/505741758_18330309811162334_2253254708631389546_n_pjujvy.jpg'],
   },
 };
 

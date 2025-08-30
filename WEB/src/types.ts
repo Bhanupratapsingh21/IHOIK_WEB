@@ -6,12 +6,14 @@ export interface IMenuItem {
 export interface IBenefit {
     title: string;
     description: string;
-    bullets: IBenefitBullet[];
+    imageSrc: string;
+    bullets: IBenefitBullet[]
 }
 
 export interface IBenefitBullet {
     title: string;
     description: string;
+    icon: JSX.Element;
 }
 
 export interface IPricing {
