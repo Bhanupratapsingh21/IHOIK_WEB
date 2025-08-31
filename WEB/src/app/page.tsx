@@ -8,11 +8,14 @@ import Container from "@/components/Container";
 import Section from "@/components/Section";
 import Stats from "@/components/Stats";
 import CTA from "@/components/CTA";
+import { PikaHero } from "@/components/Home/pika-hero";
 
 const HomePage: React.FC = () => {
   return (
     <>
-      <Hero />
+      <main className="min-h-dvh pt-14 bg-[#F7C948] text-[#1B1B1B]">
+        <PikaHero />
+      </main>
 
       <Container>
         <Section

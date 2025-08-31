@@ -14,7 +14,7 @@ export const menuItems: IMenuItem[] = [
   { text: "About Us", url: "/about" },
   { text: "Our Mission", url: "/mission" },
   { text: "Blogs", url: "/blogs" },
-  { text: "Articles", url: "/articles" },
+  { text: "News", url: "/news" },
 ];
 
 const Header: React.FC = () => {
@@ -38,26 +38,18 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-300 ${
-        scrolled
-          ? 'bg-white/70 backdrop-blur-md shadow-md'  // Glassy background when scrolled
-          : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-300 ${scrolled
+        ? 'bg-[#F7C948]/70 backdrop-blur-md shadow-md'  // Glassy background when scrolled
+        : 'bg-transparent'
+        }`}
     >
       <Container className="!px-0">
         <nav className="mx-auto flex justify-between items-center py-2 px-5 md:py-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
-              alt="IHOIK Logo"
-              width={40}
-              height={40}
-              className="rounded-full"
-              priority
-            />
-            <span className="manrope text-xl font-semibold text-foreground cursor-pointer">
-              {siteDetails.siteName}
+
+            <span className="manrope font-sans  text-xl font-semibold text-foreground cursor-pointer">
+              IHOIK
             </span>
           </Link>
 
@@ -73,14 +65,7 @@ const Header: React.FC = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="https://www.instagram.com/ithappensinkota/"
-                className="text-white bg-primary hover:bg-primary-accent px-6 py-3 rounded-full transition-colors"
-              >
-                Follow Us
-              </Link>
-            </li>
+
           </ul>
 
           {/* Mobile Menu Button */}
@@ -113,7 +98,7 @@ const Header: React.FC = () => {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <div id="mobile-menu" className="md:hidden bg-white shadow-lg">
+        <div id="mobile-menu" className="md:hidden bg-[#F7C948] shadow-lg">
           <ul className="flex flex-col space-y-4 pt-2 pb-6 px-6 text-base font-medium">
             {menuItems.map(item => (
               <li key={item.text}>
@@ -126,15 +111,7 @@ const Header: React.FC = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="https://www.instagram.com/ithappensinkota/"
-                className="text-white bg-primary hover:bg-primary-accent px-5 py-2 rounded-full block w-fit text-center"
-                onClick={toggleMenu}
-              >
-                Follow Us
-              </Link>
-            </li>
+
           </ul>
         </div>
       </Transition>
