@@ -1,0 +1,19 @@
+{
+  "name": "appwrite-setup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "node setup.js",
+    "start": "node setup.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "node-appwrite": "^18.0.0"
+  }
+}
