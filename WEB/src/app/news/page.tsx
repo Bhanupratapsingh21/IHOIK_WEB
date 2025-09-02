@@ -14,16 +14,18 @@ const databases = new Databases(client);
 
 // Define TypeScript interfaces
 interface NewsItem {
-    $id: string
-    title: string
-    excerpt: string
-    author: string
-    date: string
-    readTime: string
-    category: string
-    image?: string // Optional image
-    slug: string
-    isBreaking?: boolean
+    $id: string;
+    title: string;
+    summary: string;
+    content: string;
+    authorName: string;
+    tags: string[];
+    publishedAt: string;
+    coverImage?: string;
+    slug: string;
+    status?: string;
+    createdBy: string;
+    upvotes: number;
 }
 
 interface ApiResponse {
@@ -34,34 +36,25 @@ interface ApiResponse {
 }
 
 
-// Mock data function - replace with actual API calls
-// const mockNews: NewsItem[] = Array.from({ length: 15 }, (_, i) => ({
-//     id: i + 1,
-//     title: `New Coaching Trends in Kota ${i + 1}`,
-//     excerpt: 'Discover the latest teaching methodologies and trends being adopted by coaching centers in Kota to help students excel in competitive exams.',
-//     author: 'IHOIK News Team',
-//     date: '2023-11-15',
-//     readTime: `${3 + (i % 3)} min read`,
-//     category: i % 3 === 0 ? 'Education' : i % 3 === 1 ? 'Student Life' : 'Events',
-//     image: i % 4 === 0 ? undefined : `https://images.unsplash.com/photo-${1500000000000 + i}-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=500`,
-//     slug: `new-coaching-trends-kota-${i + 1}`,
-//     isBreaking: i % 5 === 0 // Every 5th news item is breaking news
-// }))
-
 
 
 export default function NewsPage() {
     const [news, setNews] = useState<NewsItem[]>([])
     const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1)
+    const [breakingNews, setBreakingNews] = useState<NewsItem | null>(null);
     const [totalPages, setTotalPages] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
     const [totalNews, setTotalNews] = useState(0)
     const newsPerPage = 6
 
     useEffect(() => {
-        loadNews()
-    }, [currentPage, searchQuery])
+        loadBreakingNews();
+    }, []);
+
+    useEffect(() => {
+        loadNews();
+    }, [currentPage, searchQuery]);
 
 
     async function loadNews() {
@@ -88,14 +81,16 @@ export default function NewsPage() {
             const newsPosts: NewsItem[] = res.documents.map((doc: any) => ({
                 $id: doc.$id,
                 title: doc.title,
-                excerpt: doc.excerpt,
-                author: doc.author,
-                date: doc.date,
-                readTime: doc.readTime || "5 min read",
-                category: doc.category,
-                image: doc.image,
+                summary: doc.summary,
+                authorName: doc.authorName,
+                content: doc.content,
+                tags: doc.tags,
+                coverImage: doc.coverImage,
                 slug: doc.slug,
-                isBreaking: doc.isBreaking,
+                status: doc.status,
+                createdBy: doc.createdBy,
+                publishedAt: doc.publishedAt,
+                upvotes: doc.upvotes,
             }));
 
             setNews(newsPosts);
@@ -107,6 +102,43 @@ export default function NewsPage() {
             setLoading(false);
         }
     }
+
+    async function loadBreakingNews() {
+        try {
+            const breakingRes = await databases.listDocuments(
+                process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+                process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+                [
+                    Query.orderDesc("publishedAt"),
+                    Query.limit(1),
+                ]
+            );
+
+            if (breakingRes.documents.length > 0) {
+                const doc = breakingRes.documents[0];
+                const latestBreaking: NewsItem = {
+                    $id: doc.$id,
+                    title: doc.title,
+                    summary: doc.summary,
+                    content: doc.content,
+                    authorName: doc.authorName,
+                    tags: doc.tags || [],
+                    publishedAt: doc.publishedAt,
+                    coverImage: doc.coverImage,
+                    slug: doc.slug,
+                    status: doc.status,
+                    createdBy: doc.createdBy,
+                    upvotes: doc.upvotes || 0,
+                };
+                setBreakingNews(latestBreaking);
+            } else {
+                setBreakingNews(null);
+            }
+        } catch (error) {
+            console.error("Failed to fetch breaking news:", error);
+        }
+    }
+
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault()
@@ -139,8 +171,7 @@ export default function NewsPage() {
                     </p>
                 </section>
 
-                {/* Breaking News Banner */}
-                {news.some(item => item.isBreaking) && (
+                {breakingNews && (
                     <section className="mb-8">
                         <div className="bg-[#7A1C1C] text-white rounded-2xl p-4 shadow-lg">
                             <div className="flex items-center">
@@ -148,11 +179,8 @@ export default function NewsPage() {
                                     BREAKING
                                 </div>
                                 <div className="overflow-hidden w-full">
-                                    <div className="animate-marquee whitespace-nowrap">
-                                        {news
-                                            .filter(item => item.isBreaking)
-                                            .map(item => item.title)
-                                            .join(' • ')}
+                                    <div className="animate-marquee whitespace-nowrap  will-change: transform;">
+                                        {breakingNews.title}
                                     </div>
                                 </div>
                             </div>
@@ -209,10 +237,10 @@ export default function NewsPage() {
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {news.map(item => (
                                     <article key={item.$id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                                        {item.image ? (
+                                        {item.coverImage ? (
                                             <div className="h-48 overflow-hidden">
                                                 <img
-                                                    src={item.image}
+                                                    src={item.coverImage}
                                                     alt={item.title}
                                                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                                                 />
@@ -224,40 +252,37 @@ export default function NewsPage() {
                                         )}
 
                                         <div className="p-6">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <span className="inline-block bg-[#F7C948]/20 text-[#7A1C1C] text-xs font-semibold px-3 py-1 rounded-full">
-                                                    {item.category}
-                                                </span>
-                                                {item.isBreaking && (
-                                                    <span className="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded">
-                                                        Breaking
-                                                    </span>
-                                                )}
-                                            </div>
+
 
                                             <h2 className="text-xl font-bold text-[#7A1C1C] mb-3 line-clamp-2">
                                                 {item.title}
                                             </h2>
 
                                             <p className="text-[#1B1B1B]/80 mb-4 line-clamp-3">
-                                                {item.excerpt}
+                                                {item.summary}
                                             </p>
 
                                             <div className="flex items-center justify-between text-sm text-[#1B1B1B]/60">
                                                 <div className="flex items-center">
                                                     <User className="h-4 w-4 mr-1" />
-                                                    <span>{item.author}</span>
+                                                    <span>{item.authorName}</span>
                                                 </div>
                                                 <div className="flex items-center">
                                                     <Calendar className="h-4 w-4 mr-1" />
-                                                    <span>{item.date}</span>
+                                                    <span>
+                                                        {new Date(item.publishedAt).toLocaleDateString("en-US", {
+                                                            year: "numeric",
+                                                            month: "short",
+                                                            day: "numeric",
+                                                        })}
+                                                    </span>
                                                 </div>
+
                                             </div>
 
                                             <div className="mt-4 pt-4 border-t border-[#F7C948]/20 flex justify-between items-center">
                                                 <div className="flex items-center text-sm text-[#1B1B1B]/60">
                                                     <Clock className="h-4 w-4 mr-1" />
-                                                    <span>{item.readTime}</span>
                                                 </div>
                                                 <Link
                                                     href={`/news/${item.slug}`}

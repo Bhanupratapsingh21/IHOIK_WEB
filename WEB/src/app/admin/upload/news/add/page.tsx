@@ -102,7 +102,7 @@ export default function BlogPostForm() {
 
       await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-        process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_NEWS_COLLECTION_ID!,
         ID.unique(),
         {
           title,
@@ -134,7 +134,7 @@ export default function BlogPostForm() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md space-y-6">
-      <h1 className="text-2xl font-bold dark:text-white">Create New Blog</h1>
+      <h1 className="text-2xl font-bold dark:text-white">Create New News</h1>
 
       {/* Toast notifications */}
       <div className="fixed top-4 right-4 z-50 space-y-2">
@@ -316,4 +316,3 @@ export default function BlogPostForm() {
     </div>
   );
 }
-
