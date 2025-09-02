@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { siteDetails } from '@/data/siteDetails';
 
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 const manrope = Manrope({ subsets: ['latin'] });
 const sourceSans = Source_Sans_3({ subsets: ['latin'] });
@@ -47,11 +48,13 @@ export default function RootLayout({
         className={`${manrope.className} ${sourceSans.className} antialiased`}
       >
         {siteDetails.googleAnalyticsId && <GoogleAnalytics gaId={siteDetails.googleAnalyticsId} />}
-        <Header />
-        <main>
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

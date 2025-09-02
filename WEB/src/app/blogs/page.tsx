@@ -1,109 +1,112 @@
-"use client"
+"use client";
+import { Client, Databases, Query } from "appwrite";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search } from "lucide-react";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search } from 'lucide-react'
+// Configure Appwrite client
+const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
 
-// Define TypeScript interfaces
-interface Blog {
-    id: number
-    title: string
-    excerpt: string
-    author: string
-    date: string
-    readTime: string
-    category: string
-    image: string
-    slug: string
-}
+const databases = new Databases(client);
 
-interface ApiResponse {
-    blogs: Blog[]
-    total: number
-    totalPages: number
-    page: number
-}
-
-// Mock data function - replace with actual API calls
-const mockBlogs: Blog[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    title: `The Ultimate Guide to JEE Preparation ${i + 1}`,
-    excerpt: 'Discover the best strategies and techniques to ace your JEE exams with our comprehensive guide designed specifically for Kota students.',
-    author: 'Team IHOIK',
-    date: '2023-11-15',
-    readTime: '5 min read',
-    category: 'Exam Tips',
-    image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=500',
-    slug: `ultimate-guide-jee-preparation-${i + 1}`
-}))
-
-// Simulate API call
-const fetchBlogs = async (page = 1, limit = 6, query = ''): Promise<ApiResponse> => {
-    // In a real application, this would be an actual API call
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const filteredBlogs = query
-                ? mockBlogs.filter(blog =>
-                    blog.title.toLowerCase().includes(query.toLowerCase()) ||
-                    blog.excerpt.toLowerCase().includes(query.toLowerCase()) ||
-                    blog.category.toLowerCase().includes(query.toLowerCase())
-                )
-                : mockBlogs
-
-            const total = filteredBlogs.length
-            const totalPages = Math.ceil(total / limit)
-            const startIndex = (page - 1) * limit
-            const blogs = filteredBlogs.slice(startIndex, startIndex + limit)
-
-            resolve({ blogs, total, totalPages, page })
-        }, 500) // Simulate network delay
-    })
+interface BlogPost {
+    $id: string;
+    slug: string;
+    title: string;
+    summary?: string;
+    coverImage?: string;
+    publishedAt?: string;
+    tags?: string[];
+    authorName?: string;
+    readTime?: string;
 }
 
 export default function BlogsPage() {
-    const [blogs, setBlogs] = useState<Blog[]>([])
-    const [loading, setLoading] = useState(true)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const [searchQuery, setSearchQuery] = useState('')
-    const [totalBlogs, setTotalBlogs] = useState(0)
-    const blogsPerPage = 6
+    const [blogs, setBlogs] = useState<BlogPost[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [totalBlogs, setTotalBlogs] = useState(0);
+    const blogsPerPage = 6;
 
     useEffect(() => {
-        loadBlogs()
-    }, [currentPage, searchQuery])
+        loadBlogs();
+    }, [currentPage, searchQuery]);
 
-    const loadBlogs = async () => {
-        setLoading(true)
+    async function loadBlogs() {
+        setLoading(true);
         try {
-            const response = await fetchBlogs(currentPage, blogsPerPage, searchQuery)
-            setBlogs(response.blogs)
-            setTotalPages(response.totalPages)
-            setTotalBlogs(response.total)
+            const offset = (currentPage - 1) * blogsPerPage;
+
+            let queries = [
+                Query.orderDesc("publishedAt"),
+                Query.limit(blogsPerPage),
+                Query.offset(offset),
+            ];
+
+            // Add search query if exists
+            if (searchQuery) {
+                queries.push(Query.search('title', searchQuery));
+            }
+
+            const res = await databases.listDocuments(
+                process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+                process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+                queries
+            );
+
+            // Map documents to BlogPost
+            const blogPosts = res.documents.map((doc) => ({
+                $id: doc.$id,
+                slug: doc.slug,
+                title: doc.title,
+                summary: doc.summary,
+                coverImage: doc.coverImage,
+                publishedAt: doc.publishedAt,
+                tags: doc.tags || [],
+                authorName: doc.authorName || "Admin",
+                readTime: doc.readTime || "5 min read"
+            } as BlogPost));
+
+            setBlogs(blogPosts);
+            setTotalBlogs(res.total);
+            setTotalPages(Math.ceil(res.total / blogsPerPage));
         } catch (error) {
-            console.error('Failed to fetch blogs:', error)
+            console.error('Failed to fetch blogs:', error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        setCurrentPage(1)
-        loadBlogs()
-    }
+        e.preventDefault();
+        setCurrentPage(1);
+        loadBlogs();
+    };
 
     const handlePageChange = (newPage: number) => {
         if (newPage >= 1 && newPage <= totalPages) {
-            setCurrentPage(newPage)
-            window.scrollTo({ top: 0, behavior: 'smooth' })
+            setCurrentPage(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    }
+    };
+
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return "Unknown date";
+
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
-            {/* Header */}
-
             <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
                 {/* Page Header */}
                 <section className="mb-12 text-center">
@@ -123,7 +126,7 @@ export default function BlogsPage() {
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#1B1B1B]/40 h-5 w-5" />
                                 <input
                                     type="text"
-                                    placeholder="Search blogs by title, content, or category..."
+                                    placeholder="Search blogs by title..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="w-full pl-10 pr-4 py-3 border border-[#F7C948]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7C948]/50"
@@ -163,34 +166,36 @@ export default function BlogsPage() {
                         <>
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {blogs.map(blog => (
-                                    <article key={blog.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                                    <article key={blog.$id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                                         <div className="h-48 overflow-hidden">
                                             <img
-                                                src={blog.image}
+                                                src={blog.coverImage || "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=500"}
                                                 alt={blog.title}
                                                 className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                                             />
                                         </div>
                                         <div className="p-6">
                                             <div className="mb-2">
-                                                <span className="inline-block bg-[#F7C948]/20 text-[#7A1C1C] text-xs font-semibold px-3 py-1 rounded-full">
-                                                    {blog.category}
-                                                </span>
+                                                {blog.tags && blog.tags.length > 0 && (
+                                                    <span className="inline-block bg-[#F7C948]/20 text-[#7A1C1C] text-xs font-semibold px-3 py-1 rounded-full">
+                                                        {blog.tags[0]}
+                                                    </span>
+                                                )}
                                             </div>
                                             <h2 className="text-xl font-bold text-[#7A1C1C] mb-3 line-clamp-2">
                                                 {blog.title}
                                             </h2>
                                             <p className="text-[#1B1B1B]/80 mb-4 line-clamp-3">
-                                                {blog.excerpt}
+                                                {blog.summary || 'No summary available'}
                                             </p>
                                             <div className="flex items-center justify-between text-sm text-[#1B1B1B]/60">
                                                 <div className="flex items-center">
                                                     <User className="h-4 w-4 mr-1" />
-                                                    <span>{blog.author}</span>
+                                                    <span>{blog.authorName}</span>
                                                 </div>
                                                 <div className="flex items-center">
                                                     <Calendar className="h-4 w-4 mr-1" />
-                                                    <span>{blog.date}</span>
+                                                    <span>{formatDate(blog.publishedAt)}</span>
                                                 </div>
                                             </div>
                                             <div className="mt-4 pt-4 border-t border-[#F7C948]/20 flex justify-between items-center">
@@ -248,15 +253,15 @@ export default function BlogsPage() {
 
                             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                                 // Show pages around current page
-                                let pageNum
+                                let pageNum;
                                 if (totalPages <= 5) {
-                                    pageNum = i + 1
+                                    pageNum = i + 1;
                                 } else if (currentPage <= 3) {
-                                    pageNum = i + 1
+                                    pageNum = i + 1;
                                 } else if (currentPage >= totalPages - 2) {
-                                    pageNum = totalPages - 4 + i
+                                    pageNum = totalPages - 4 + i;
                                 } else {
-                                    pageNum = currentPage - 2 + i
+                                    pageNum = currentPage - 2 + i;
                                 }
 
                                 return (
@@ -270,7 +275,7 @@ export default function BlogsPage() {
                                     >
                                         {pageNum}
                                     </button>
-                                )
+                                );
                             })}
 
                             <button
@@ -290,7 +295,6 @@ export default function BlogsPage() {
                 )}
             </main>
 
-
             {/* Custom styles */}
             <style jsx>{`
         .line-clamp-2 {
@@ -307,5 +311,5 @@ export default function BlogsPage() {
         }
       `}</style>
         </div>
-    )
+    );
 }

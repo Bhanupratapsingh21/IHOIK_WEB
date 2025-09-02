@@ -51,3 +51,176 @@ export interface ISocials {
     x?: string;
     [key: string]: string | undefined;
 }
+// types/blog.ts
+export interface Blog {
+  $id: string;
+  $collectionId: string;
+  $databaseId: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: string[];
+  
+  // Content fields
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  authorId: string;
+  featuredImage?: string;
+  category: string;
+  tags?: string[];
+  readTime: number;
+  
+  // Status fields
+  isPublished: boolean;
+  publishedAt?: string;
+  views: number;
+  
+  // SEO fields
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export interface BlogCreate {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  authorId: string;
+  featuredImage?: string;
+  category: string;
+  tags?: string[];
+  readTime: number;
+  isPublished: boolean;
+  publishedAt?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export interface BlogUpdate {
+  title?: string;
+  slug?: string;
+  excerpt?: string;
+  content?: string;
+  author?: string;
+  authorId?: string;
+  featuredImage?: string;
+  category?: string;
+  tags?: string[];
+  readTime?: number;
+  isPublished?: boolean;
+  publishedAt?: string;
+  views?: number;
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export interface BlogList {
+  documents: Blog[];
+  total: number;
+}
+
+export interface BlogFilters {
+  category?: string;
+  authorId?: string;
+  isPublished?: boolean;
+  tags?: string[];
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'publishedAt' | 'createdAt' | 'views' | 'title';
+  sortOrder?: 'ASC' | 'DESC';
+}
+
+// types/news.ts
+export interface News {
+  $id: string;
+  $collectionId: string;
+  $databaseId: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: string[];
+  
+  // Content fields
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  authorId: string;
+  featuredImage?: string;
+  category: string;
+  
+  // Status fields
+  isBreaking: boolean;
+  isPublished: boolean;
+  publishedAt?: string;
+  views: number;
+  
+  // Source information
+  source?: string;
+  sourceUrl?: string;
+  location?: string;
+  
+  // SEO fields
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export interface NewsCreate {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  authorId: string;
+  featuredImage?: string;
+  category: string;
+  isBreaking: boolean;
+  isPublished: boolean;
+  publishedAt?: string;
+  source?: string;
+  sourceUrl?: string;
+  location?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export interface NewsUpdate {
+  title?: string;
+  slug?: string;
+  excerpt?: string;
+  content?: string;
+  author?: string;
+  authorId?: string;
+  featuredImage?: string;
+  category?: string;
+  isBreaking?: boolean;
+  isPublished?: boolean;
+  publishedAt?: string;
+  source?: string;
+  sourceUrl?: string;
+  location?: string;
+  views?: number;
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export interface NewsList {
+  documents: News[];
+  total: number;
+}
+
+export interface NewsFilters {
+  category?: string;
+  isBreaking?: boolean;
+  isPublished?: boolean;
+  location?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'publishedAt' | 'createdAt' | 'views' | 'title';
+  sortOrder?: 'ASC' | 'DESC';
+}
