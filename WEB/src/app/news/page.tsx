@@ -2,11 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search, Newspaper } from 'lucide-react'
+import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search, Newspaper } from 'lucide-react';
+import { Client, Databases, Query } from 'appwrite';
+
+
+const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
+
+const databases = new Databases(client);
 
 // Define TypeScript interfaces
 interface NewsItem {
-    id: number
+    $id: string
     title: string
     excerpt: string
     author: string
@@ -25,41 +33,22 @@ interface ApiResponse {
     page: number
 }
 
+
 // Mock data function - replace with actual API calls
-const mockNews: NewsItem[] = Array.from({ length: 15 }, (_, i) => ({
-    id: i + 1,
-    title: `New Coaching Trends in Kota ${i + 1}`,
-    excerpt: 'Discover the latest teaching methodologies and trends being adopted by coaching centers in Kota to help students excel in competitive exams.',
-    author: 'IHOIK News Team',
-    date: '2023-11-15',
-    readTime: `${3 + (i % 3)} min read`,
-    category: i % 3 === 0 ? 'Education' : i % 3 === 1 ? 'Student Life' : 'Events',
-    image: i % 4 === 0 ? undefined : `https://images.unsplash.com/photo-${1500000000000 + i}-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=500`,
-    slug: `new-coaching-trends-kota-${i + 1}`,
-    isBreaking: i % 5 === 0 // Every 5th news item is breaking news
-}))
+// const mockNews: NewsItem[] = Array.from({ length: 15 }, (_, i) => ({
+//     id: i + 1,
+//     title: `New Coaching Trends in Kota ${i + 1}`,
+//     excerpt: 'Discover the latest teaching methodologies and trends being adopted by coaching centers in Kota to help students excel in competitive exams.',
+//     author: 'IHOIK News Team',
+//     date: '2023-11-15',
+//     readTime: `${3 + (i % 3)} min read`,
+//     category: i % 3 === 0 ? 'Education' : i % 3 === 1 ? 'Student Life' : 'Events',
+//     image: i % 4 === 0 ? undefined : `https://images.unsplash.com/photo-${1500000000000 + i}-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=500`,
+//     slug: `new-coaching-trends-kota-${i + 1}`,
+//     isBreaking: i % 5 === 0 // Every 5th news item is breaking news
+// }))
 
-// Simulate API call
-const fetchNews = async (page = 1, limit = 6, query = ''): Promise<ApiResponse> => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const filteredNews = query
-                ? mockNews.filter(item =>
-                    item.title.toLowerCase().includes(query.toLowerCase()) ||
-                    item.excerpt.toLowerCase().includes(query.toLowerCase()) ||
-                    item.category.toLowerCase().includes(query.toLowerCase())
-                )
-                : mockNews
 
-            const total = filteredNews.length
-            const totalPages = Math.ceil(total / limit)
-            const startIndex = (page - 1) * limit
-            const news = filteredNews.slice(startIndex, startIndex + limit)
-
-            resolve({ news, total, totalPages, page })
-        }, 500)
-    })
-}
 
 export default function NewsPage() {
     const [news, setNews] = useState<NewsItem[]>([])
@@ -74,17 +63,48 @@ export default function NewsPage() {
         loadNews()
     }, [currentPage, searchQuery])
 
-    const loadNews = async () => {
-        setLoading(true)
+
+    async function loadNews() {
+        setLoading(true);
         try {
-            const response = await fetchNews(currentPage, newsPerPage, searchQuery)
-            setNews(response.news)
-            setTotalPages(response.totalPages)
-            setTotalNews(response.total)
+            const offset = (currentPage - 1) * newsPerPage;
+
+            let queries = [
+                Query.orderDesc("publishedAt"),
+                Query.limit(newsPerPage),
+                Query.offset(offset),
+            ];
+
+            if (searchQuery) {
+                queries.push(Query.search("title", searchQuery));
+            }
+
+            const res = await databases.listDocuments(
+                process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+                process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+                queries
+            );
+
+            const newsPosts: NewsItem[] = res.documents.map((doc: any) => ({
+                $id: doc.$id,
+                title: doc.title,
+                excerpt: doc.excerpt,
+                author: doc.author,
+                date: doc.date,
+                readTime: doc.readTime || "5 min read",
+                category: doc.category,
+                image: doc.image,
+                slug: doc.slug,
+                isBreaking: doc.isBreaking,
+            }));
+
+            setNews(newsPosts);
+            setTotalPages(Math.ceil(res.total / newsPerPage));
+            setTotalNews(res.total);
         } catch (error) {
-            console.error('Failed to fetch news:', error)
+            console.error("Failed to fetch blogs:", error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
@@ -188,7 +208,7 @@ export default function NewsPage() {
                         <>
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {news.map(item => (
-                                    <article key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                                    <article key={item.$id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                                         {item.image ? (
                                             <div className="h-48 overflow-hidden">
                                                 <img
