@@ -10,80 +10,63 @@ client
 
 const databases = new Databases(client);
 
+
 // Blog Collection Schema
 const blogSchema = {
   databaseId: process.env.APPWRITE_DATABASE_ID,
-  collectionId: 'blogs',
+  collectionId: '68a0a985001211bdfg42',
   name: 'Blogs',
-  permissions: {
-    read: [Permission.read(Role.any())],
-    write: [Permission.write(Role.users()), Permission.update(Role.users()), Permission.delete(Role.users())]
-  },
   attributes: [
-    { key: 'title', type: 'string', size: 255, required: true },
-    { key: 'slug', type: 'string', size: 255, required: true },
-    { key: 'excerpt', type: 'string', size: 500, required: true },
-    { key: 'content', type: 'string', size: 100000, required: true },
-    { key: 'author', type: 'string', size: 100, required: true },
-    { key: 'authorId', type: 'string', size: 36, required: true },
-    { key: 'featuredImage', type: 'string', size: 255, required: false },
-    { key: 'category', type: 'string', size: 50, required: true },
-    { key: 'tags', type: 'string', size: 50, required: false, array: true },
-    { key: 'readTime', type: 'integer', min: 1, max: 60, required: true },
-    { key: 'isPublished', type: 'boolean', required: true, default: false },
-    { key: 'publishedAt', type: 'datetime', required: false },
-    { key: 'views', type: 'integer', min: 0, required: true, default: 0 },
-    { key: 'metaTitle', type: 'string', size: 255, required: false },
-    { key: 'metaDescription', type: 'string', size: 500, required: false }
+    { key: 'title', type: 'string', size: 250, required: true },
+    { key: 'summary', type: 'string', size: 25000, required: false },
+    { key: 'content', type: 'string', size: 5000000, required: true },
+    { key: 'tags', type: 'string', size: 1000, required: false, array: true },
+    { key: 'coverImage', type: 'string', size: 1000, required: false },
+    { key: 'status', type: 'string', required: false },
+    { key: 'publishedAt', type: 'datetime', required: true },
+    { key: 'createdBy', type: 'string', size: 1200, required: true },
+    { key: 'upvotes', type: 'integer', min: 0, required: false, default: 0 },
+    { key: 'slug', type: 'string', size: 767, required: true },
+    { key: 'authorName', type: 'string', size: 12000, required: true },
+    { key: 'createdAt', type: 'datetime', required: false },
+    { key: 'updatedAt', type: 'datetime', required: false }
   ],
   indexes: [
     { key: 'slug', type: 'unique', attributes: ['slug'], orders: ['ASC'] },
-    { key: 'category', type: 'key', attributes: ['category'], orders: ['ASC'] },
-    { key: 'published', type: 'key', attributes: ['isPublished', 'publishedAt'], orders: ['ASC', 'DESC'] },
-    { key: 'author', type: 'key', attributes: ['authorId'], orders: ['ASC'] }
+    { key: 'publishedAt', type: 'key', attributes: ['publishedAt'], orders: ['DESC'] }
   ]
 };
 
 // News Collection Schema
 const newsSchema = {
   databaseId: process.env.APPWRITE_DATABASE_ID,
-  collectionId: 'news',
+  collectionId: '68a0a985001211beeg23',
   name: 'News',
-  permissions: {
-    read: [Permission.read(Role.any())],
-    write: [Permission.write(Role.users()), Permission.update(Role.users()), Permission.delete(Role.users())]
-  },
   attributes: [
-    { key: 'title', type: 'string', size: 255, required: true },
-    { key: 'slug', type: 'string', size: 255, required: true },
-    { key: 'excerpt', type: 'string', size: 500, required: true },
-    { key: 'content', type: 'string', size: 50000, required: true },
-    { key: 'author', type: 'string', size: 100, required: true },
-    { key: 'authorId', type: 'string', size: 36, required: true },
-    { key: 'featuredImage', type: 'string', size: 255, required: false },
-    { key: 'category', type: 'string', size: 50, required: true },
-    { key: 'isBreaking', type: 'boolean', required: true, default: false },
-    { key: 'isPublished', type: 'boolean', required: true, default: false },
-    { key: 'publishedAt', type: 'datetime', required: false },
-    { key: 'source', type: 'string', size: 100, required: false },
-    { key: 'sourceUrl', type: 'url', size: 2000, required: false },
-    { key: 'location', type: 'string', size: 100, required: false },
-    { key: 'views', type: 'integer', min: 0, required: true, default: 0 },
-    { key: 'metaTitle', type: 'string', size: 255, required: false },
-    { key: 'metaDescription', type: 'string', size: 500, required: false }
+    { key: 'title', type: 'string', size: 250, required: true },
+    { key: 'summary', type: 'string', size: 25000, required: false },
+    { key: 'content', type: 'string', size: 5000000, required: true },
+    { key: 'tags', type: 'string', size: 1000, required: false, array: true },
+    { key: 'coverImage', type: 'string', size: 1000, required: false },
+    { key: 'status', type: 'string', required: false },
+    { key: 'publishedAt', type: 'datetime', required: true },
+    { key: 'createdBy', type: 'string', size: 1200, required: true },
+    { key: 'upvotes', type: 'integer', min: 0, required: false, default: 0 },
+    { key: 'slug', type: 'string', size: 767, required: true },
+    { key: 'authorName', type: 'string', size: 12000, required: true },
+    { key: 'createdAt', type: 'datetime', required: false },
+    { key: 'updatedAt', type: 'datetime', required: false }
   ],
   indexes: [
     { key: 'slug', type: 'unique', attributes: ['slug'], orders: ['ASC'] },
-    { key: 'category', type: 'key', attributes: ['category'], orders: ['ASC'] },
-    { key: 'breaking', type: 'key', attributes: ['isBreaking', 'publishedAt'], orders: ['ASC', 'DESC'] },
-    { key: 'published', type: 'key', attributes: ['isPublished', 'publishedAt'], orders: ['ASC', 'DESC'] }
+    { key: 'publishedAt', type: 'key', attributes: ['publishedAt'], orders: ['DESC'] }
   ]
 };
 
 async function setupAppwriteCollections() {
   try {
     console.log('🚀 Starting Appwrite collection setup...');
-    
+
     // Check if database exists, create if not
     let database;
     try {
@@ -100,10 +83,10 @@ async function setupAppwriteCollections() {
 
     // Setup Blogs collection
     await setupCollection(blogSchema);
-    
+
     // Setup News collection
     await setupCollection(newsSchema);
-    
+
     console.log('🎉 Appwrite setup completed successfully!');
     return { success: true };
   } catch (error) {
@@ -142,7 +125,7 @@ async function setupCollection(schema) {
         );
         console.log(`✅ Collection ${schema.name} created with permissions`);
       }
-      
+
       // Wait for collection to be ready
       await new Promise(resolve => setTimeout(resolve, 2000));
     }
@@ -154,7 +137,7 @@ async function setupCollection(schema) {
         // Check if attribute already exists
         const attributes = await databases.listAttributes(schema.databaseId, schema.collectionId);
         const attributeExists = attributes.attributes.some(a => a.key === attr.key);
-        
+
         if (!attributeExists) {
           await createAttribute(schema.databaseId, schema.collectionId, attr);
           console.log(`   ✅ Attribute ${attr.key} (${attr.type}) added`);
@@ -175,7 +158,7 @@ async function setupCollection(schema) {
         // Check if index already exists
         const indexes = await databases.listIndexes(schema.databaseId, schema.collectionId);
         const indexExists = indexes.indexes.some(i => i.key === index.key);
-        
+
         if (!indexExists) {
           await databases.createIndex(
             schema.databaseId,
@@ -205,7 +188,7 @@ async function setupCollection(schema) {
 
 async function createAttribute(databaseId, collectionId, attr) {
   const { key, type, required, array = false } = attr;
-  
+
   switch (type) {
     case 'string':
       return await databases.createStringAttribute(
@@ -217,7 +200,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'integer':
       return await databases.createIntegerAttribute(
         databaseId,
@@ -229,7 +212,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'float':
       return await databases.createFloatAttribute(
         databaseId,
@@ -241,7 +224,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'boolean':
       return await databases.createBooleanAttribute(
         databaseId,
@@ -251,7 +234,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'datetime':
       return await databases.createDatetimeAttribute(
         databaseId,
@@ -261,7 +244,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'email':
       return await databases.createEmailAttribute(
         databaseId,
@@ -271,7 +254,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'url':
       return await databases.createUrlAttribute(
         databaseId,
@@ -281,7 +264,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'ip':
       return await databases.createIpAttribute(
         databaseId,
@@ -291,7 +274,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     case 'enum':
       return await databases.createEnumAttribute(
         databaseId,
@@ -302,7 +285,7 @@ async function createAttribute(databaseId, collectionId, attr) {
         attr.default || null,
         array
       );
-      
+
     default:
       throw new Error(`Unsupported attribute type: ${type}`);
   }
