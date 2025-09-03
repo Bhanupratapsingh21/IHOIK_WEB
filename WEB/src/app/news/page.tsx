@@ -1,10 +1,8 @@
 "use client"
-
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search, Newspaper } from 'lucide-react';
+import { Calendar, Clock, User, ArrowLeft, ArrowRight, Search, Newspaper, Heart, Share2, Eye } from 'lucide-react';
 import { Client, Databases, Query } from 'appwrite';
-
 
 const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -12,7 +10,6 @@ const client = new Client()
 
 const databases = new Databases(client);
 
-// Define TypeScript interfaces
 interface NewsItem {
     $id: string;
     title: string;
@@ -26,17 +23,8 @@ interface NewsItem {
     status?: string;
     createdBy: string;
     upvotes: number;
+    views?: number;
 }
-
-interface ApiResponse {
-    news: NewsItem[]
-    total: number
-    totalPages: number
-    page: number
-}
-
-
-
 
 export default function NewsPage() {
     const [news, setNews] = useState<NewsItem[]>([])
@@ -55,7 +43,6 @@ export default function NewsPage() {
     useEffect(() => {
         loadNews();
     }, [currentPage, searchQuery]);
-
 
     async function loadNews() {
         setLoading(true);
@@ -91,6 +78,7 @@ export default function NewsPage() {
                 createdBy: doc.createdBy,
                 publishedAt: doc.publishedAt,
                 upvotes: doc.upvotes,
+                views: doc.views || 0,
             }));
 
             setNews(newsPosts);
@@ -129,6 +117,7 @@ export default function NewsPage() {
                     status: doc.status,
                     createdBy: doc.createdBy,
                     upvotes: doc.upvotes || 0,
+                    views: doc.views || 0,
                 };
                 setBreakingNews(latestBreaking);
             } else {
@@ -139,11 +128,9 @@ export default function NewsPage() {
         }
     }
 
-
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault()
         setCurrentPage(1)
-        loadNews()
     }
 
     const handlePageChange = (newPage: number) => {
@@ -155,12 +142,10 @@ export default function NewsPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
-
-
             <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
                 {/* Page Header */}
                 <section className="mb-12 text-center">
-                    <div className="inline-flex items-center justify-center p-3 bg-[#7A1C1C] rounded-full mb-6">
+                    <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] rounded-full mb-6 shadow-lg">
                         <Newspaper className="h-8 w-8 text-white" />
                     </div>
                     <h1 className="text-4xl md:text-6xl font-bold text-[#7A1C1C] mb-6">
@@ -173,13 +158,14 @@ export default function NewsPage() {
 
                 {breakingNews && (
                     <section className="mb-8">
-                        <div className="bg-[#7A1C1C] text-white rounded-2xl p-4 shadow-lg">
+                        <div className="bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white rounded-2xl p-4 shadow-lg">
                             <div className="flex items-center">
-                                <div className="bg-white text-[#7A1C1C] px-3 py-1 rounded-full text-sm font-bold mr-4">
+                                <div className="bg-white text-[#7A1C1C] px-3 py-1 rounded-full text-sm font-bold mr-4 flex items-center">
+                                    <div className="h-2 w-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
                                     BREAKING
                                 </div>
                                 <div className="overflow-hidden w-full">
-                                    <div className="animate-marquee whitespace-nowrap  will-change: transform;">
+                                    <div className="animate-marquee whitespace-nowrap will-change: transform;">
                                         {breakingNews.title}
                                     </div>
                                 </div>
@@ -199,12 +185,12 @@ export default function NewsPage() {
                                     placeholder="Search news by title, content, or category..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 border border-[#F7C948]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7C948]/50"
+                                    className="w-full pl-10 pr-4 py-3 border border-[#F7C948]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7C948]/50 transition-all duration-300 focus:shadow-md"
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="bg-[#7A1C1C] text-white px-6 py-3 rounded-lg hover:bg-[#5e1515] transition-colors duration-300 whitespace-nowrap"
+                                className="bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-6 py-3 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 whitespace-nowrap shadow-md hover:shadow-lg"
                             >
                                 Search
                             </button>
@@ -218,7 +204,7 @@ export default function NewsPage() {
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {Array.from({ length: newsPerPage }).map((_, index) => (
                                 <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 animate-pulse">
-                                    <div className="h-48 bg-gray-200"></div>
+                                    <div className="h-48 bg-gradient-to-r from-[#F7C948]/20 to-[#7A1C1C]/20"></div>
                                     <div className="p-6">
                                         <div className="h-6 bg-gray-200 rounded mb-4"></div>
                                         <div className="h-4 bg-gray-200 rounded mb-2"></div>
@@ -236,25 +222,30 @@ export default function NewsPage() {
                         <>
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {news.map(item => (
-                                    <article key={item.$id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                                    <article key={item.$id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-[#F7C948]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 group">
                                         {item.coverImage ? (
-                                            <div className="h-48 overflow-hidden">
+                                            <div className="h-48 overflow-hidden relative">
                                                 <img
                                                     src={item.coverImage}
                                                     alt={item.title}
-                                                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                                 />
+                                                <div className="absolute top-4 left-4 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white text-xs px-2 py-1 rounded-full">
+                                                    {item.tags?.[0] || 'News'}
+                                                </div>
+                                                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                                             </div>
                                         ) : (
-                                            <div className="h-48 bg-gradient-to-br from-[#F7C948] to-[#7A1C1C] flex items-center justify-center">
+                                            <div className="h-48 bg-gradient-to-br from-[#F7C948] to-[#7A1C1C] flex items-center justify-center relative">
                                                 <Newspaper className="h-12 w-12 text-white opacity-80" />
+                                                <div className="absolute top-4 left-4 bg-white/90 text-[#7A1C1C] text-xs px-2 py-1 rounded-full">
+                                                    {item.tags?.[0] || 'News'}
+                                                </div>
                                             </div>
                                         )}
 
                                         <div className="p-6">
-
-
-                                            <h2 className="text-xl font-bold text-[#7A1C1C] mb-3 line-clamp-2">
+                                            <h2 className="text-xl font-bold text-[#7A1C1C] mb-3 line-clamp-2 group-hover:text-[#9e2b2b] transition-colors">
                                                 {item.title}
                                             </h2>
 
@@ -262,7 +253,15 @@ export default function NewsPage() {
                                                 {item.summary}
                                             </p>
 
-                                            <div className="flex items-center justify-between text-sm text-[#1B1B1B]/60">
+                                            <div className="flex flex-wrap gap-2 mb-4">
+                                                {item.tags?.slice(0, 3).map((tag, index) => (
+                                                    <span key={index} className="bg-[#F7C948]/10 text-[#7A1C1C] text-xs px-2 py-1 rounded-full">
+                                                        #{tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+
+                                            <div className="flex items-center justify-between text-sm text-[#1B1B1B]/60 mb-4">
                                                 <div className="flex items-center">
                                                     <User className="h-4 w-4 mr-1" />
                                                     <span>{item.authorName}</span>
@@ -277,18 +276,16 @@ export default function NewsPage() {
                                                         })}
                                                     </span>
                                                 </div>
-
                                             </div>
 
-                                            <div className="mt-4 pt-4 border-t border-[#F7C948]/20 flex justify-between items-center">
-                                                <div className="flex items-center text-sm text-[#1B1B1B]/60">
-                                                    <Clock className="h-4 w-4 mr-1" />
-                                                </div>
+                                            <div className="flex justify-between items-center pt-4 border-t border-[#F7C948]/20">
+
                                                 <Link
                                                     href={`/news/${item.slug}`}
-                                                    className="text-[#7A1C1C] font-medium hover:text-[#5e1515] transition-colors"
+                                                    className="text-[#7A1C1C] font-medium hover:text-[#5e1515] transition-colors flex items-center group-hover:underline"
                                                 >
-                                                    Read More →
+                                                    Read More
+                                                    <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
                                                 </Link>
                                             </div>
                                         </div>
@@ -310,7 +307,7 @@ export default function NewsPage() {
                                 {searchQuery && (
                                     <button
                                         onClick={() => setSearchQuery('')}
-                                        className="bg-[#7A1C1C] text-white px-6 py-2 rounded-lg hover:bg-[#5e1515] transition-colors duration-300"
+                                        className="bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-6 py-2 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 shadow-md hover:shadow-lg"
                                     >
                                         Clear Search
                                     </button>
@@ -327,7 +324,7 @@ export default function NewsPage() {
                             <button
                                 onClick={() => handlePageChange(currentPage - 1)}
                                 disabled={currentPage === 1}
-                                className="flex items-center px-4 py-2 rounded-lg border border-[#F7C948]/30 bg-white text-[#7A1C1C] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#F7C948]/10 transition-colors"
+                                className="flex items-center px-4 py-2 rounded-lg border border-[#F7C948]/30 bg-white text-[#7A1C1C] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#F7C948]/10 transition-all duration-300 shadow-sm hover:shadow-md"
                             >
                                 <ArrowLeft className="h-4 w-4 mr-1" />
                                 Previous
@@ -349,8 +346,8 @@ export default function NewsPage() {
                                     <button
                                         key={pageNum}
                                         onClick={() => handlePageChange(pageNum)}
-                                        className={`px-4 py-2 rounded-lg border transition-colors ${currentPage === pageNum
-                                            ? 'bg-[#7A1C1C] text-white border-[#7A1C1C]'
+                                        className={`px-4 py-2 rounded-lg border transition-all duration-300 shadow-sm hover:shadow-md ${currentPage === pageNum
+                                            ? 'bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white border-[#7A1C1C] shadow-md'
                                             : 'bg-white border-[#F7C948]/30 text-[#7A1C1C] hover:bg-[#F7C948]/10'
                                             }`}
                                     >
@@ -362,7 +359,7 @@ export default function NewsPage() {
                             <button
                                 onClick={() => handlePageChange(currentPage + 1)}
                                 disabled={currentPage === totalPages}
-                                className="flex items-center px-4 py-2 rounded-lg border border-[#F7C948]/30 bg-white text-[#7A1C1C] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#F7C948]/10 transition-colors"
+                                className="flex items-center px-4 py-2 rounded-lg border border-[#F7C948]/30 bg-white text-[#7A1C1C] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#F7C948]/10 transition-all duration-300 shadow-sm hover:shadow-md"
                             >
                                 Next
                                 <ArrowRight className="h-4 w-4 ml-1" />
