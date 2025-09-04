@@ -286,60 +286,6 @@ export default function BlogPage() {
                     prose-code:text-[#F7C948]"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
-
-                {/* Engagement Buttons */}
-                <div className="flex items-center justify-center gap-4 py-8 border-t border-b border-[#F7C948]/20 mb-12">
-                    <button
-                        onClick={handleLike}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-md transform hover:-translate-y-0.5 ${isLiked
-                            ? 'bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white'
-                            : 'bg-white text-[#7A1C1C] border border-[#F7C948]/30 hover:bg-[#F7C948]/10'
-                            }`}
-                    >
-                        <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
-                        <span className="font-medium">{isLiked ? 'Liked' : 'Like'}</span>
-                        <span className="ml-1 font-bold">({post.upvotes || 0})</span>
-                    </button>
-
-                    <button
-                        onClick={handleBookmark}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-md transform hover:-translate-y-0.5 ${isBookmarked
-                            ? 'bg-gradient-to-r from-[#F7C948] to-[#ffdd70] text-[#7A1C1C]'
-                            : 'bg-white text-[#7A1C1C] border border-[#F7C948]/30 hover:bg-[#F7C948]/10'
-                            }`}
-                    >
-                        <Bookmark className={`h-5 w-5 ${isBookmarked ? 'fill-current' : ''}`} />
-                        <span className="font-medium">{isBookmarked ? 'Saved' : 'Save'}</span>
-                    </button>
-
-                    <button
-                        onClick={handleShare}
-                        className="flex items-center gap-2 bg-white text-[#7A1C1C] px-6 py-3 rounded-full border border-[#F7C948]/30 hover:bg-[#F7C948]/10 transition-all duration-300 shadow-md transform hover:-translate-y-0.5"
-                    >
-                        <Share2 className="h-5 w-5" />
-                        <span className="font-medium">{isSharing ? 'Sharing...' : 'Share'}</span>
-                    </button>
-                </div>
-
-
-
-                {/* Related Articles CTA */}
-                <div className="text-center bg-gradient-to-br from-white to-[#FEF6E6] p-10 rounded-2xl shadow-lg border border-[#F7C948]/20">
-                    <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] rounded-full mb-6">
-                        <Sparkles className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-bold text-[#7A1C1C] mb-4">Enjoyed this article?</h3>
-                    <p className="text-[#1B1B1B]/80 mb-8 max-w-2xl mx-auto text-lg">
-                        Discover more inspiring stories, news, and insights from Kota's vibrant student community.
-                    </p>
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-8 py-4 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-lg font-medium"
-                    >
-                        <BookOpen className="h-5 w-5" />
-                        Explore More Articles
-                    </Link>
-                </div>
             </div>
 
             {/* Scroll to top button */}

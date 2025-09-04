@@ -45,7 +45,7 @@ export default function NewsPage() {
             try {
                 const res = await databases.listDocuments(
                     process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-                    process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+                    process.env.NEXT_PUBLIC_APPWRITE_NEWS_COLLECTION_ID!,
                     [Query.equal("slug", slug)]
                 );
 
@@ -71,6 +71,7 @@ export default function NewsPage() {
                         views: doc.views || 0,
                         readTime: readTime || 5
                     });
+                    console.log(res);
                 } else {
                     setPost(null);
                 }
@@ -264,44 +265,6 @@ export default function NewsPage() {
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
 
-                {/* Engagement Buttons */}
-                <div className="flex items-center justify-center gap-4 py-8 border-t border-b border-[#F7C948]/20 mb-12">
-                    <button
-                        onClick={handleLike}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${isLiked
-                            ? 'bg-[#7A1C1C] text-white shadow-md'
-                            : 'bg-white text-[#7A1C1C] border border-[#F7C948]/30 hover:bg-[#F7C948]/10'
-                            }`}
-                    >
-                        <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
-                        <span>{isLiked ? 'Liked' : 'Like'}</span>
-                        <span className="ml-1">({post.upvotes || 0})</span>
-                    </button>
-
-                    <button
-                        onClick={handleShare}
-                        className="flex items-center gap-2 bg-white text-[#7A1C1C] px-6 py-3 rounded-full border border-[#F7C948]/30 hover:bg-[#F7C948]/10 transition-all duration-300"
-                    >
-                        <Share2 className="h-5 w-5" />
-                        <span>{isSharing ? 'Sharing...' : 'Share'}</span>
-                    </button>
-                </div>
-
-
-                {/* Related Articles CTA */}
-                <div className="text-center">
-                    <h3 className="text-2xl font-bold text-[#7A1C1C] mb-4">Enjoyed this article?</h3>
-                    <p className="text-[#1B1B1B]/80 mb-6 max-w-2xl mx-auto">
-                        Discover more news and stories from Kota's vibrant student community.
-                    </p>
-                    <Link
-                        href="/news"
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-6 py-3 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 shadow-md hover:shadow-lg"
-                    >
-                        <BookOpen className="h-5 w-5" />
-                        Explore More Articles
-                    </Link>
-                </div>
             </div>
         </div>
     );
