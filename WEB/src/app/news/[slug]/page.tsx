@@ -6,22 +6,24 @@ import { formatDate } from "@/utilsfolder/formatDate";
 import { Client, Databases, Query } from "appwrite";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, User, Heart, Share2, Eye, Clock, BookOpen, MessageCircle, Bookmark, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowLeft, Calendar, User, Heart, Share2, Eye, Clock, BookOpen } from "lucide-react";
 
-type BlogPost = {
+interface NewsItem {
     $id: string;
-    slug: string;
     title: string;
     summary: string;
     content: string;
+    authorName: string;
     tags: string[];
+    publishedAt: string;
     coverImage?: string;
-    publishedAt?: string;
-    authorName?: string;
-    upvotes?: number;
+    slug: string;
+    status?: string;
+    createdBy: string;
+    upvotes: number;
     views?: number;
     readTime?: number;
-};
+}
 
 const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -29,16 +31,14 @@ const client = new Client()
 
 const databases = new Databases(client);
 
-export default function BlogPage() {
+export default function NewsPage() {
     const params = useParams<{ slug: string }>();
     const { slug } = params;
 
-    const [post, setPost] = useState<BlogPost | null>(null);
+    const [post, setPost] = useState<NewsItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [isLiked, setIsLiked] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(false);
     const [isSharing, setIsSharing] = useState(false);
-    const [showScrollTop, setShowScrollTop] = useState(false);
 
     useEffect(() => {
         async function getPostBySlug() {
@@ -53,18 +53,20 @@ export default function BlogPage() {
                     const doc = res.documents[0];
                     const content = doc.content || "";
                     const wordCount = content.split(/\s+/).length;
-                    const readTime = Math.ceil(wordCount / 200);
+                    const readTime = Math.ceil(wordCount / 200); // Assuming 200 words per minute
 
                     setPost({
                         $id: doc.$id,
-                        slug: doc.slug,
                         title: doc.title,
                         summary: doc.summary,
-                        content: content,
-                        tags: doc.tags || [],
-                        coverImage: doc.coverImage,
-                        publishedAt: doc.publishedAt,
                         authorName: doc.authorName,
+                        content: content,
+                        tags: doc.tags,
+                        coverImage: doc.coverImage,
+                        slug: doc.slug,
+                        status: doc.status,
+                        createdBy: doc.createdBy,
+                        publishedAt: doc.publishedAt,
                         upvotes: doc.upvotes || 0,
                         views: doc.views || 0,
                         readTime: readTime || 5
@@ -73,7 +75,7 @@ export default function BlogPage() {
                     setPost(null);
                 }
             } catch (e) {
-                console.error("Error fetching blog by slug:", e);
+                console.error("Error fetching news by slug:", e);
                 setPost(null);
             } finally {
                 setLoading(false);
@@ -83,26 +85,9 @@ export default function BlogPage() {
         if (slug) getPostBySlug();
     }, [slug]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowScrollTop(window.scrollY > 300);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
     const handleLike = () => {
         setIsLiked(!isLiked);
-        // Update like count in database
-    };
-
-    const handleBookmark = () => {
-        setIsBookmarked(!isBookmarked);
+        // Here you would typically update the like count in your database
     };
 
     const handleShare = () => {
@@ -118,7 +103,7 @@ export default function BlogPage() {
         } else {
             navigator.clipboard.writeText(window.location.href);
             setIsSharing(false);
-            // Show a toast notification instead of alert
+            // You could add a toast notification here
             alert("Link copied to clipboard!");
         }
     };
@@ -149,19 +134,18 @@ export default function BlogPage() {
         );
     }
 
-
     if (!post) {
         return (
             <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20 flex items-center justify-center px-4">
                 <div className="text-center bg-white p-8 rounded-2xl shadow-md border border-[#F7C948]/20 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-[#7A1C1C] mb-4">Post Not Found</h2>
-                    <p className="text-[#1B1B1B]/80 mb-6">The blog page you're looking for doesn't exist.</p>
+                    <p className="text-[#1B1B1B]/80 mb-6">The news you're looking for doesn't exist.</p>
                     <Link
                         href="/news"
                         className="inline-flex items-center gap-2 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-6 py-3 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                         <ArrowLeft className="h-4 w-4" />
-                        Back to Blogs
+                        Back to News
                     </Link>
                 </div>
             </div>
@@ -170,8 +154,7 @@ export default function BlogPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
-            {/* Decorative elements */}
-            <div className="max-w-4xl mx-auto px-4 py-8 lg:py-12 relative z-10">
+            <div className="max-w-4xl mx-auto px-4 py-8 lg:py-12">
                 {/* Back button */}
                 <div className="mb-8">
                     <Link
@@ -179,7 +162,7 @@ export default function BlogPage() {
                         className="inline-flex items-center gap-2 text-[#7A1C1C] hover:text-[#5e1515] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#F7C948]/10 group"
                     >
                         <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
-                        <span>Back to Blogs</span>
+                        <span>Back to News</span>
                     </Link>
                 </div>
 
@@ -193,7 +176,7 @@ export default function BlogPage() {
                         {post.summary}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-6 mb-6">
+                    <div className="flex flex-wrap items-center gap-4 mb-6">
                         <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] flex items-center justify-center text-white font-medium text-lg shadow-md">
                                 {post.authorName?.[0]?.toUpperCase() || "A"}
@@ -209,20 +192,16 @@ export default function BlogPage() {
 
                         <div className="h-6 w-px bg-[#F7C948]/40"></div>
 
-                        {post.publishedAt && (
-                            <>
-                                <div className="flex items-center gap-2 text-[#1B1B1B]/60">
-                                    <Calendar className="h-4 w-4" />
-                                    <span>{formatDate(post.publishedAt)}</span>
-                                </div>
+                        <div className="flex items-center gap-2 text-[#1B1B1B]/60">
+                            <Calendar className="h-4 w-4" />
+                            <span>{formatDate(post.publishedAt)}</span>
+                        </div>
 
-                                <div className="h-6 w-px bg-[#F7C948]/40"></div>
-                            </>
-                        )}
+                        <div className="h-6 w-px bg-[#F7C948]/40"></div>
 
-                        <div className="flex items-center gap-2 text-[#1B1B1B]/60 ">
+                        <div className="flex items-center gap-2 text-[#1B1B1B]/60">
                             <Clock className="h-4 w-4" />
-                            <span className="text-sm font-medium">{post.readTime || 5} min read</span>
+                            <span>{post.readTime || 5} min read</span>
                         </div>
                     </div>
 
@@ -268,22 +247,20 @@ export default function BlogPage() {
                 )}
 
                 {/* Content */}
-                <article className="prose prose-lg max-w-none mb-14 
-                    prose-headings:font-bold prose-headings:bg-gradient-to-r prose-headings:from-[#7A1C1C] prose-headings:to-[#9e2b2b] prose-headings:bg-clip-text prose-headings:text-transparent
-                    prose-p:text-[#1B1B1B]/90 prose-p:leading-relaxed prose-p:font-[#1B1B1B]
-                    prose-a:text-[#7A1C1C] prose-a:font-medium prose-a:no-underline prose-a:border-b-2 prose-a:border-[#F7C948] prose-a:pb-0.5 hover:prose-a:border-[#7A1C1C]
+                <article className="prose prose-lg max-w-none mb-12 
+                    prose-headings:text-[#7A1C1C] prose-headings:font-bold
+                    prose-p:text-[#1B1B1B]/90 prose-p:leading-relaxed
+                    prose-a:text-[#7A1C1C] prose-a:font-medium prose-a:no-underline hover:prose-a:underline
                     prose-strong:text-[#7A1C1C]
-                    prose-blockquote:border-l-[#F7C948] prose-blockquote:bg-gradient-to-r prose-blockquote:from-[#FEF6E6] prose-blockquote:to-[#F7C948]/20 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-xl prose-blockquote:shadow-sm
+                    prose-blockquote:border-l-[#F7C948] prose-blockquote:bg-[#FEF6E6] prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-lg
                     prose-ul:list-disc prose-ul:pl-6
                     prose-ol:list-decimal prose-ol:pl-6
-                    prose-li:marker:text-[#F7C948] prose-li:marker:font-bold
+                    prose-li:marker:text-[#F7C948]
                     prose-hr:border-[#F7C948]/30
-                    prose-table:border-[#F7C948]/30 prose-th:bg-gradient-to-r prose-th:from-[#FEF6E6] prose-th:to-[#F7C948]/20 prose-th:text-[#7A1C1C] prose-th:border-[#F7C948]/30
+                    prose-table:border-[#F7C948]/30 prose-th:bg-[#FEF6E6] prose-th:text-[#7A1C1C] prose-th:border-[#F7C948]/30
                     prose-td:border-[#F7C948]/30
                     prose-figure:mx-0
-                    prose-img:rounded-xl prose-img:border prose-img:border-[#F7C948]/20 prose-img:shadow-md
-                    prose-pre:bg-gradient-to-br prose-pre:from-[#2d1b0e] prose-pre:to-[#1B1B1B] prose-pre:border prose-pre:border-[#F7C948]/20 prose-pre:rounded-xl
-                    prose-code:text-[#F7C948]"
+                    prose-img:rounded-lg prose-img:border prose-img:border-[#F7C948]/20"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
 
@@ -291,80 +268,41 @@ export default function BlogPage() {
                 <div className="flex items-center justify-center gap-4 py-8 border-t border-b border-[#F7C948]/20 mb-12">
                     <button
                         onClick={handleLike}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-md transform hover:-translate-y-0.5 ${isLiked
-                            ? 'bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white'
+                        className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${isLiked
+                            ? 'bg-[#7A1C1C] text-white shadow-md'
                             : 'bg-white text-[#7A1C1C] border border-[#F7C948]/30 hover:bg-[#F7C948]/10'
                             }`}
                     >
                         <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
-                        <span className="font-medium">{isLiked ? 'Liked' : 'Like'}</span>
-                        <span className="ml-1 font-bold">({post.upvotes || 0})</span>
-                    </button>
-
-                    <button
-                        onClick={handleBookmark}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-md transform hover:-translate-y-0.5 ${isBookmarked
-                            ? 'bg-gradient-to-r from-[#F7C948] to-[#ffdd70] text-[#7A1C1C]'
-                            : 'bg-white text-[#7A1C1C] border border-[#F7C948]/30 hover:bg-[#F7C948]/10'
-                            }`}
-                    >
-                        <Bookmark className={`h-5 w-5 ${isBookmarked ? 'fill-current' : ''}`} />
-                        <span className="font-medium">{isBookmarked ? 'Saved' : 'Save'}</span>
+                        <span>{isLiked ? 'Liked' : 'Like'}</span>
+                        <span className="ml-1">({post.upvotes || 0})</span>
                     </button>
 
                     <button
                         onClick={handleShare}
-                        className="flex items-center gap-2 bg-white text-[#7A1C1C] px-6 py-3 rounded-full border border-[#F7C948]/30 hover:bg-[#F7C948]/10 transition-all duration-300 shadow-md transform hover:-translate-y-0.5"
+                        className="flex items-center gap-2 bg-white text-[#7A1C1C] px-6 py-3 rounded-full border border-[#F7C948]/30 hover:bg-[#F7C948]/10 transition-all duration-300"
                     >
                         <Share2 className="h-5 w-5" />
-                        <span className="font-medium">{isSharing ? 'Sharing...' : 'Share'}</span>
+                        <span>{isSharing ? 'Sharing...' : 'Share'}</span>
                     </button>
                 </div>
 
 
-
                 {/* Related Articles CTA */}
-                <div className="text-center bg-gradient-to-br from-white to-[#FEF6E6] p-10 rounded-2xl shadow-lg border border-[#F7C948]/20">
-                    <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] rounded-full mb-6">
-                        <Sparkles className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-bold text-[#7A1C1C] mb-4">Enjoyed this article?</h3>
-                    <p className="text-[#1B1B1B]/80 mb-8 max-w-2xl mx-auto text-lg">
-                        Discover more inspiring stories, news, and insights from Kota's vibrant student community.
+                <div className="text-center">
+                    <h3 className="text-2xl font-bold text-[#7A1C1C] mb-4">Enjoyed this article?</h3>
+                    <p className="text-[#1B1B1B]/80 mb-6 max-w-2xl mx-auto">
+                        Discover more news and stories from Kota's vibrant student community.
                     </p>
                     <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-8 py-4 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-lg font-medium"
+                        href="/news"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white px-6 py-3 rounded-lg hover:from-[#5e1515] hover:to-[#7A1C1C] transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                         <BookOpen className="h-5 w-5" />
                         Explore More Articles
                     </Link>
                 </div>
             </div>
-
-            {/* Scroll to top button */}
-            {showScrollTop && (
-                <button
-                    onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 bg-gradient-to-r from-[#7A1C1C] to-[#9e2b2b] text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 z-50"
-                    aria-label="Scroll to top"
-                >
-                    <ArrowLeft className="h-5 w-5 rotate-90" />
-                </button>
-            )}
-
-            {/* Custom styles */}
-            <style jsx>{`
-                @keyframes float {
-                    0% { transform: translateY(0px); }
-                    50% { transform: translateY(-5px); }
-                    100% { transform: translateY(0px); }
-                }
-                
-                .floating {
-                    animation: float 3s ease-in-out infinite;
-                }
-            `}</style>
         </div>
     );
 }
