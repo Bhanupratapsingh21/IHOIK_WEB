@@ -3,18 +3,28 @@ import { siteDetails } from "./siteDetails";
 
 export const testimonials: ITestimonial[] = [
     {
-        name: 'Ankit Sharma',
-        role: 'JEE Aspirant, Kota',
-        message: `Being part of ${siteDetails.siteName} has helped me stay motivated during the toughest days of coaching. The study tips and student stories are truly relatable and inspiring.`,
+        name: "Ritika Singh",
+        role: "NEET Aspirant, Kota",
+        message: `${siteDetails.siteName} shows the side of Kota that no coaching brochure talks about. Watching their stories made me feel understood in my lowest days of preparation.`,
     },
     {
-        name: 'Neha Gupta',
-        role: 'NEET Candidate, Kota',
-        message: `I found great support and friends through ${siteDetails.siteName}. It’s a comforting community where we share not just academic struggles but also our homesickness and dreams.`,
+        name: "Arjun Mehta",
+        role: "JEE Dropper, Kota",
+        message: `The films from ${siteDetails.siteName} are so real that it feels like they are telling my own story. It gave me courage to face the pressure and reminded me that I’m not alone.`,
     },
     {
-        name: 'Rohit Verma',
-        role: 'Kota Student',
-        message: `Thanks to ${siteDetails.siteName}, I learned how to balance study pressure with extracurriculars. Their events and counseling resources made a real difference for my mental health.`,
+        name: "Pooja Sharma",
+        role: "Medical Student",
+        message: `Ihoik Media captures the emotions of students beautifully — friendship, failures, and small victories. It’s more than content, it’s therapy for students like us.`,
+    },
+    {
+        name: "Kabir Khan",
+        role: "Former Kota Student",
+        message: `Watching ${siteDetails.siteName} was like reliving my own Kota journey. I wish such honest storytelling existed when I was preparing — it would have helped me handle pressure better.`,
+    },
+    {
+        name: "Sneha Verma",
+        role: "Parent of Aspirant",
+        message: `Through ${siteDetails.siteName}, I understood what my child goes through in Kota. It opened my eyes to the emotional struggles behind academics.`,
     },
 ];

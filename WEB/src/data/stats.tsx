@@ -4,18 +4,21 @@ import { IStats } from "@/types";
 
 export const stats: IStats[] = [
     {
-        title: "150,000+",
+        title: "1M+",
         icon: <BsPeopleFill size={34} className="text-blue-500" />,
-        description: "Students supported through community events, forums, and study groups across Kota.",
+        description:
+            "Students and aspirants reached through Ihoik Media’s films, reels, and storytelling around Kota life.",
     },
     {
-        title: "4.9",
+        title: "4.8/5",
         icon: <BsStarFill size={34} className="text-yellow-500" />,
-        description: "Average rating from student feedback highlighting the platform’s positive impact.",
+        description:
+            "Average audience rating across YouTube & Instagram, showing the love and relatability of the stories.",
     },
     {
-        title: "150+",
+        title: "50+",
         icon: <PiGraduationCapFill size={34} className="text-green-600" />,
-        description: "Academic and well-being workshops conducted to empower students and build skills.",
+        description:
+            "Real student stories and episodes produced, highlighting struggles, friendships, and lessons beyond exams.",
     },
 ];

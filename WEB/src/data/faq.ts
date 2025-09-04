@@ -4,25 +4,22 @@ import { siteDetails } from "./siteDetails";
 export const faqs: IFAQ[] = [
     {
         question: `What is ${siteDetails.siteName}?`,
-        answer:
-            `${siteDetails.siteName} is a vibrant community platform created by and for Kota students to share study tips, mental health resources, and support throughout their academic journey.`,
+        answer: `${siteDetails.siteName} is a storytelling media platform that captures real student life in Kota — from academic pressure and friendships to self-discovery. We create films, reels, and content that students can relate to.`,
     },
     {
-        question: `Is ${siteDetails.siteName} free to use?`,
-        answer: `Yes! Our platform is completely free, aiming to build a strong, supportive student community without any cost.`,
+        question: `Is ${siteDetails.siteName} free to watch?`,
+        answer: `Yes! All our stories and episodes on YouTube and Instagram are free to access. Our goal is to inspire and support students without charging anything.`,
     },
     {
-        question: `How can I join ${siteDetails.siteName}'s community?`,
-        answer:
-            `You can join by signing up on our website, following our social media channels, and participating in our discussion forums and events.`,
+        question: `How can I engage with ${siteDetails.siteName}?`,
+        answer: `You can watch our episodes on YouTube, follow us on Instagram, and share our content with friends. Students can also participate in discussions, events, and campaigns we run online.`,
     },
     {
-        question: `Can I contribute my own stories or study tips?`,
-        answer: `Absolutely! We encourage students to share their experiences, tips, and motivational stories to help others in the Kota student community.`,
+        question: `Can I share my own story with ${siteDetails.siteName}?`,
+        answer: `Absolutely! We welcome students to send in their experiences, challenges, or creative ideas. Some stories even get featured in our content to inspire others.`,
     },
     {
-        question: `Does ${siteDetails.siteName} offer mental health support?`,
-        answer:
-            `Yes, we provide access to counseling resources, peer support groups, and organize activities focusing on emotional well-being to help students cope with stress and homesickness.`,
+        question: `Does ${siteDetails.siteName} talk about mental health?`,
+        answer: `Yes, mental health is one of our core themes. Through stories, awareness videos, and collaborations, we highlight the emotional struggles of Kota students and encourage self-care and support.`,
     },
 ];
