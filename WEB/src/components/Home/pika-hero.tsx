@@ -108,12 +108,17 @@ export function PikaHero() {
             </div>
 
             {/* Right Section - Phone Image */}
+            {/* Right Section - Phone Image */}
             <div
-              className={`relative mx-auto w-full max-w-[280px] sm:max-w-xs md:max-w-sm transition-all duration-1000 ease-out delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
+              className={`relative w-full max-w-[280px] sm:max-w-xs md:max-w-sm transition-all duration-1000 ease-out delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
                 }`}
-              style={{ alignSelf: 'flex-end', marginTop: 'auto' }}
+              style={{
+                marginLeft: 'auto',
+                marginTop: 'auto',
+                alignSelf: 'flex-end'
+              }}
             >
-              <div className="animate-float">
+              <div className="animate-float" style={{ transform: 'translateY(15px)' }}>
                 <div
                   aria-hidden="true"
                   className="absolute right-3 top-12 hidden h-20 w-36 md:right-4 md:top-16 md:h-28 md:w-44 rotate-6 rounded-lg bg-white/20 md:block animate-pulse"
@@ -131,10 +136,6 @@ export function PikaHero() {
                   height={420}
                   className="relative z-10 h-auto w-full drop-shadow-xl md:drop-shadow-2xl"
                   priority
-                  style={{
-                    display: 'block',
-                    marginTop: 'auto'
-                  }}
                 />
               </div>
             </div>
