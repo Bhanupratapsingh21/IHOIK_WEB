@@ -61,7 +61,7 @@ export default function NewsPage() {
 
             const res = await databases.listDocuments(
                 process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-                process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+                process.env.NEXT_PUBLIC_APPWRITE_NEWS_COLLECTION_ID!,
                 queries
             );
 
@@ -95,7 +95,7 @@ export default function NewsPage() {
         try {
             const breakingRes = await databases.listDocuments(
                 process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-                process.env.NEXT_PUBLIC_APPWRITE_BLOGS_COLLECTION_ID!,
+                process.env.NEXT_PUBLIC_APPWRITE_NEWS_COLLECTION_ID!,
                 [
                     Query.orderDesc("publishedAt"),
                     Query.limit(1),

@@ -28,7 +28,7 @@ function slugify(title: string): string {
     .replace(/-+/g, "-");           // collapse multiple hyphens
 }
 
-export default function BlogPostForm() {
+export default function NewsPostForm() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -118,7 +118,7 @@ export default function BlogPostForm() {
         }
       );
 
-      addToast({ variant: "success", message: "Blog created successfully!" });
+      addToast({ variant: "success", message: "News created successfully!" });
       setTitle("");
       setSummary("");
       setTags([]);
@@ -159,7 +159,7 @@ export default function BlogPostForm() {
         <input
           id="title"
           type="text"
-          placeholder="Enter your blog title"
+          placeholder="Enter your news title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
