@@ -47,31 +47,33 @@ export function PikaHero() {
           <div className="absolute top-1/2 left-1/4 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/5 animate-pulse delay-500"></div>
         </div>
 
-        <div className="relative px-4 sm:px-6 pt-2 md:px-10">
+        <div className="relative px-4 sm:px-6 pt-14 md:px-10">
           {/* Animated Headline */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-4 top-6 z-0 sm:inset-x-6 md:inset-x-10 md:top-12"
           >
-            <p className={`text-balance font-sans text-[12vw] leading-none font-extrabold text-white/95 sm:text-[14vw] md:text-[16vw] lg:text-[190px] transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}>
-              IHOIK
-            </p>
+            <div className="w-1/2 flex justify-center pt-12  items-center md:pt-32 md:h-36">
+              <Image
+                src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
+                alt="IHOIK Logo"
+                height={150}
+                width={400}
+                className="object-contain"
+              />
+            </div>
           </div>
 
           <div className="relative z-10 flex flex-col items-end gap-6 md:gap-8 lg:gap-20 md:flex-row h-full">
             {/* Left Section */}
-            <div className="flex flex-col gap-4 pt-28 md:pt-16 lg:pt-64 md:pb-14 w-full md:w-1/2">
-              <p className={`text-ellipsis font-sans text-[9vw] leading-none font-extrabold text-[#7A1C1C] sm:text-[8vw] md:text-[7vw] lg:text-[70px] transition-all duration-700 ease-out delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-                }`}>
-                Media
-              </p>
+            <div className="flex flex-col gap-4 pt-24 md:pt-12 lg:pt-64 md:pb-14 w-full md:w-1/2">
+
               <p className={`font-bold text-[#7A1C1C] text-base md:text-lg lg:text-xl transition-all duration-700 ease-out delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
                 }`}>
                 Lessons Beyond PCMB • Coming Soon
               </p>
 
-              <div className={`mt-4 md:mt-6 flex flex-wrap items-center gap-4 md:gap-8 text-xs sm:text-sm transition-all duration-700 ease-out delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              <div className={`mt-2 md:mt-6 flex flex-wrap items-center gap-4 md:gap-8 text-xs sm:text-sm transition-all duration-700 ease-out delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}>
                 <Link href="https://www.instagram.com/ihoikmedia/" className="inline-flex items-center gap-1 md:gap-2 text-[#1B1B1B]/80 hover:text-[#1B1B1B] transition-colors duration-300 hover:scale-105">
                   <Instagram className="h-4 w-4 md:h-5 md:w-5" aria-hidden="true" />
