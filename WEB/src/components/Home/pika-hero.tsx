@@ -1,16 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import { Instagram, Youtube } from "lucide-react"
+import { Instagram, Youtube, Camera, Video, Users, Sparkles, ArrowRight, Play } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { FlipWords } from "@/components/ui/flip-words"
+import { Globe } from "lucide-react"
+
 
 export function PikaHero() {
   const [isVisible, setIsVisible] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
   const sectionRef = useRef(null)
-
+  const [activeService, setActiveService] = useState(0)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,121 +33,308 @@ export function PikaHero() {
     }
   }, [])
 
+  // Service rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveService(prev => (prev + 1) % services.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const services = [
+    {
+      title: "Content Creation",
+      description: "Engaging video content that tells your brand story",
+      icon: Video
+    },
+    {
+      title: "Social Media Management",
+      description: "Strategic content planning and execution across platforms",
+      icon: Users
+    },
+    {
+      title: "Photography & Videography",
+      description: "Professional visual content that captures attention",
+      icon: Camera
+    }
+  ]
+
+  const clients = [
+    { name: "BrandA", logo: "/placeholder.svg?height=40&width=120" },
+    { name: "BrandB", logo: "/placeholder.svg?height=40&width=120" },
+    { name: "BrandC", logo: "/placeholder.svg?height=40&width=120" },
+    { name: "BrandD", logo: "/placeholder.svg?height=40&width=120" },
+    { name: "BrandE", logo: "/placeholder.svg?height=40&width=120" }
+  ]
+
+  const [activeIndex, setActiveIndex] = useState(0)
+  const carouselRef = useRef(null)
+
+  const socialCards = [
+    {
+      platform: "YouTube",
+      icon: Youtube,
+      url: "https://www.youtube.com/@ihoikmedia",
+
+      description: "Watch our video content",
+      image: "/images/yt.png"
+    },
+    {
+      platform: "Instagram",
+      icon: Instagram,
+      url: "https://www.instagram.com/ihoikmedia/",
+
+      description: "Follow our latest updates",
+      image: "/images/ig.png"
+    },
+    {
+      platform: "Website",
+      icon: Globe,
+      url: "#",
+
+      description: "Visit our website",
+      image: "/images/web.png"
+    }
+  ]
+
+  // Auto-rotate the carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % socialCards.length)
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const getCardPosition = (index: any) => {
+    const total = socialCards.length
+    const position = (index - activeIndex + total) % total
+
+    switch (position) {
+      case 0: // Center card
+        return "scale-110 z-20 opacity-100"
+      case 1: // Right card
+        return "translate-x-24 scale-90 z-10 opacity-80"
+      case 2: // Left card (for 3 items)
+      default:
+        return "-translate-x-24 scale-90 z-10 opacity-80"
+    }
+  }
+
   return (
     <section
       ref={sectionRef}
-      className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-6 md:py-10 lg:py-16"
+      className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-6 md:py-10 lg:py-16 relative overflow-hidden"
       aria-labelledby="ihoik-title"
     >
-      <div className="relative rounded-2xl md:rounded-3xl border-4 border-white/90 bg-[#F7C948] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.25)] md:shadow-[0_25px_60px_-20px_rgba(0,0,0,0.35)] ring-1 ring-white/30 overflow-hidden">
-        {/* Animated circles */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-10 -left-10 w-24 h-24 md:-top-20 md:-left-20 md:w-40 md:h-40 rounded-full bg-white/10 animate-pulse"></div>
-          <div className="absolute -bottom-10 -right-10 w-24 h-24 md:-bottom-20 md:-right-20 md:w-40 md:h-40 rounded-full bg-white/10 animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/4 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/5 animate-pulse delay-500"></div>
-        </div>
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FFE580] rounded-full opacity-20 animate-float-1"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-[#7A1C1C] rounded-full opacity-10 animate-float-2"></div>
+        <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-[#1B1B1B] rounded-full opacity-5 animate-float-3"></div>
 
-        <div className="relative px-4 sm:px-6 pt-14 md:px-10">
-          {/* Animated Headline */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-4 top-6 z-0 sm:inset-x-6 md:inset-x-10 md:top-12"
-          >
-            <div className="w-1/2 flex justify-center pt-12  items-center md:pt-32 md:h-36">
-              <Image
-                src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
-                alt="IHOIK Logo"
-                height={150}
-                width={400}
-                className="object-contain"
-              />
-            </div>
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[length:50px_50px] bg-grid-black"></div>
+      </div>
+
+      <div className="relative z-10">
+        <div className="relative rounded-3xl border border-white/20 bg-gradient-to-br from-white to-white/95 shadow-2xl overflow-hidden backdrop-blur-sm">
+          {/* Animated border */}
+          <div className="absolute inset-0 rounded-3xl border border-transparent bg-clip-padding bg-origin-border animate-border-rotate">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#F7C948] via-[#8b3c3c] to-[#F7C948] bg-[length:200%_100%]"></div>
           </div>
 
-          <div className="relative z-10 flex flex-col items-end gap-6 md:gap-8 lg:gap-20 md:flex-row h-full">
-            {/* Left Section */}
-            <div className="flex flex-col gap-4 pt-24 md:pt-12 lg:pt-64 md:pb-14 w-full md:w-1/2">
+          <div className="relative px-6 sm:px-8 pt-12 md:pt-16 lg:pt-20 pb-10 md:pb-14">
+            {/* Logo and navigation */}
+            <div className="flex justify-between items-center mb-12 md:mb-16">
+              <div className={`transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+                <Image
+                  src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
+                  alt="IHOIK Media Logo"
+                  height={60}
+                  width={180}
+                  className="object-contain"
+                />
+              </div>
 
-              <p className={`font-bold text-[#7A1C1C] text-base md:text-lg lg:text-xl transition-all duration-700 ease-out delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
-                }`}>
-                Lessons Beyond PCMB • Coming Soon
-              </p>
-
-              <div className={`mt-2 md:mt-6 flex flex-wrap items-center gap-4 md:gap-8 text-xs sm:text-sm transition-all duration-700 ease-out delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}>
-                <Link href="https://www.instagram.com/ihoikmedia/" className="inline-flex items-center gap-1 md:gap-2 text-[#1B1B1B]/80 hover:text-[#1B1B1B] transition-colors duration-300 hover:scale-105">
-                  <Instagram className="h-4 w-4 md:h-5 md:w-5" aria-hidden="true" />
-                  <span className="font-semibold">Follow Us On IG</span>
+              <div className={`flex items-center gap-4 transition-all duration-1000 ease-out delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+                <Link
+                  href="https://www.instagram.com/ihoikmedia/"
+                  className="p-2 bg-black/5 rounded-full hover:bg-black/10 transition-colors duration-300 group"
+                  aria-label="Follow us on Instagram"
+                >
+                  <Instagram className="h-5 w-5 text-[#1B1B1B] group-hover:text-[#7A1C1C] transition-colors" />
                 </Link>
                 <Link
                   href="https://www.youtube.com/@ihoikmedia"
-                  className="inline-flex items-center gap-1 md:gap-2 text-[#1B1B1B]/80 hover:text-[#1B1B1B] transition-colors duration-300 hover:scale-105"
+                  className="p-2 bg-black/5 rounded-full hover:bg-black/10 transition-colors duration-300 group"
+                  aria-label="Subscribe on YouTube"
                 >
-                  <Youtube className="h-4 w-4 md:h-5 md:w-5" aria-hidden="true" />
-                  <span className="font-semibold">Subscribe on YT</span>
+                  <Youtube className="h-5 w-5 text-[#1B1B1B] group-hover:text-[#7A1C1C] transition-colors" />
                 </Link>
               </div>
             </div>
 
-            {/* Right character area */}
-            <div className={`relative mx-auto w-full max-w-[280px] sm:max-w-xs md:max-w-sm transition-all duration-1000 ease-out delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-              }`}>
-              <div className="animate-float">
-                <div
-                  aria-hidden="true"
-                  className="absolute right-3 top-12 hidden h-20 w-36 md:right-4 md:top-16 md:h-28 md:w-44 rotate-6 rounded-lg bg-white/20 md:block animate-pulse"
-                />
-                <div aria-hidden="true" className="absolute inset-x-4 sm:inset-x-6 bottom-1 h-4 md:h-6 rounded-full bg-black/10 blur-[2px]" />
-                <Image
-                  src={
-                    "https://res.cloudinary.com/djwzwq4cu/image/upload/e_background_removal/f_png/v1757006312/WhatsApp_Image_2025-09-04_at_21.21.39_378767af_dwlerh.jpg"
-                  }
-                  alt="Phone mockup showing social media content"
-                  width={320}
-                  height={420}
-                  className="relative z-10 h-auto w-full drop-shadow-xl md:drop-shadow-2xl"
-                  priority
-                />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+              {/* Left content */}
+              <div className={`space-y-6 md:space-y-8 transition-all duration-1000 ease-out delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1B1B1B] mb-4 leading-tight">
+                    Elevate Your <span className="text-[#7A1C1C]">Brand</span> With Creative Media Solutions
+                  </h1>
+                  <p className="text-lg md:text-xl text-[#1B1B1B]/80 max-w-lg">
+                    We transform ideas into engaging visual stories that captivate audiences and drive results.
+                  </p>
+                </div>
+
+                {/* Services carousel */}
+                <div className="bg-gradient-to-r from-[#F7C948]/10 to-transparent p-4 rounded-xl border-l-4 border-[#F7C948]">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-[#F7C948] p-2 rounded-lg">
+                      {(() => {
+                        const Icon = services[activeService].icon;
+                        return <Icon className="h-5 w-5 text-[#1B1B1B]" />;
+                      })()}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-[#1B1B1B]">{services[activeService].title}</h3>
+                      <p className="text-sm text-[#1B1B1B]/70">{services[activeService].description}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-1 mt-3">
+                    {services.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`h-1 rounded-full transition-all duration-500 ${index === activeService ? 'w-6 bg-[#7A1C1C]' : 'w-3 bg-[#1B1B1B]/30'}`}
+                        onClick={() => setActiveService(index)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA buttons */}
+                <div className="flex flex-wrap gap-4">
+                  <button className="bg-[#7A1C1C] text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 group">
+                    <span>Start a Project</span>
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Right content - Media showcase */}
+              <div className={`relative transition-all duration-1000 ease-out delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className="grid grid-cols-2 gap-4 md:gap-6">
+                  {/* Main media card */}
+                  <div className="relative h-80 w-full max-w-4xl mx-auto flex items-center justify-center">
+                    {/* Circular track background (optional visual element) */}
+                    <div className="absolute w-72 h-72 rounded-full border-2 border-dashed bg border-gray-200 opacity-50"></div>
+
+                    {socialCards.map((card, index) => {
+                      const Icon = card.icon
+                      const position = getCardPosition(index)
+
+                      return (
+                        <Link
+                          key={index}
+                          href={card.url}
+                          className={`absolute transition-all duration-700 ease-in-out transform ${position} hover:scale-115 hover:z-30`}
+                        >
+                          <div className="w-60 h-72 bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
+                            {/* Card image */}
+                            <div className={`h-32 bg-gradient-to-r  relative overflow-hidden`}>
+                              <img
+                                src={card.image}
+                                alt={card.platform}
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Icon className="h-12 w-12 text-white" />
+                              </div>
+                            </div>
+
+                            {/* Card content */}
+                            <div className="p-5">
+                              <h3 className="text-xl font-bold text-gray-800 mb-2">{card.platform}</h3>
+                              <p className="text-gray-600 text-sm mb-4">{card.description}</p>
+
+                              <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                                <span>Visit {card.platform}</span>
+                                <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                              </div>
+                            </div>
+
+                            {/* Hover overlay */}
+                            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl"></div>
+                          </div>
+                        </Link>
+                      )
+                    })}
+
+                    {/* Navigation dots */}
+                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                      {socialCards.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setActiveIndex(index)}
+                          className={`w-3 h-3 rounded-full transition-all ${index === activeIndex ? 'bg-blue-600 scale-125' : 'bg-gray-300'}`}
+                          aria-label={`Show ${socialCards[index].platform} card`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Additional decorative circles for depth */}
-        <div aria-hidden="true">
-          <div className="absolute -left-6 -bottom-6 h-16 w-16 md:-left-8 md:-bottom-8 md:h-24 md:w-24 rounded-full bg-black/10" />
-          <div className="absolute -right-4 -bottom-4 h-20 w-20 md:-right-6 md:-bottom-6 md:h-28 md:w-28 rounded-full bg-black/10" />
-        </div>
-
-        <div className="absolute inset-0 rounded-2xl md:rounded-3xl border-2 border-white/50 animate-ping-slow" style={{ animationDuration: '3s' }}></div>
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
+        @keyframes float-1 {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
         }
-        @keyframes ping-slow {
-          0% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          75%,
-          100% {
-            transform: scale(1.05);
-            opacity: 0;
-          }
+        @keyframes float-2 {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(15px) rotate(-3deg); }
         }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
+        @keyframes float-3 {
+          0%, 100% { transform: translateY(0px) scale(1); }
+          50% { transform: translateY(-10px) scale(1.05); }
         }
-        .animate-ping-slow {
-          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+        @keyframes border-rotate {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+        @keyframes float-element-1 {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        @keyframes float-element-2 {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(-2deg); }
+        }
+        .bg-grid-black {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(0 0 0 / 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+        }
+        .animate-float-1 {
+          animation: float-1 8s ease-in-out infinite;
+        }
+        .animate-float-2 {
+          animation: float-2 10s ease-in-out infinite;
+        }
+        .animate-float-3 {
+          animation: float-3 12s ease-in-out infinite;
+        }
+        .animate-border-rotate {
+          animation: border-rotate 3s linear infinite;
+        }
+        .animate-float-element-1 {
+          animation: float-element-1 5s ease-in-out infinite;
+        }
+        .animate-float-element-2 {
+          animation: float-element-2 6s ease-in-out infinite 1s;
         }
       `}</style>
     </section>
