@@ -47,6 +47,9 @@ export default function RootLayout({
       <body
         className={`${manrope.className} ${sourceSans.className} antialiased`}
       >
+
+        <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
+
         {siteDetails.googleAnalyticsId && <GoogleAnalytics gaId={siteDetails.googleAnalyticsId} />}
         <AuthProvider>
           <Header />

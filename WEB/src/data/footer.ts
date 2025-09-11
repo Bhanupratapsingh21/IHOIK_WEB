@@ -7,36 +7,21 @@ export const footerDetails: {
     telephone: string;
     socials: ISocials;
 } = {
-    subheading: "Building a supportive community for Kota students with study tips, events, and mental health resources.",
+    subheading: "IHOIK Media – a creative platform supporting Kota students with authentic stories, study tips, events, and mental health resources.",
     quickLinks: [
-        {
-            text: "Home",
-            url: "/",
-        },
-        {
-            text: "About Us",
-            url: "/about",
-        },
-        {
-            text: "Our Mission",
-            url: "/mission",
-        },
-        {
-            text: "Blogs",
-            url: "/blogs",
-        },
-        {
-            text: "Articles",
-            url: "/articles",
-        },
+        { text: "Home", url: "/" },
+        { text: "About Us", url: "/about" },
+        { text: "Our Mission", url: "/mission" },
+        { text: "Blogs", url: "/blogs" },
+        { text: "Community", url: "/community" },
     ],
-    email: 'contact@ihioik.com',
-    telephone: '+91 98765 43210',
+    email: "contact@ihoikmedia.com",
+    telephone: "+91 98765 43210",
     socials: {
-        twitter: 'https://twitter.com/ithappensinkota',
-        facebook: 'https://facebook.com/ithappensinkota',
-        youtube: 'https://youtube.com/ithappensinkota',
-        linkedin: 'https://www.linkedin.com/company/ithappensinkota',
-        instagram: 'https://www.instagram.com/ithappensinkota',
-    }
-}
+        twitter: "https://twitter.com/ihoikmedia",
+        facebook: "https://facebook.com/ihoikmedia",
+        youtube: "https://youtube.com/@ihoikmedia",
+        linkedin: "https://www.linkedin.com/company/ihoikmedia",
+        instagram: "https://www.instagram.com/ihoikmedia/",
+    },
+};

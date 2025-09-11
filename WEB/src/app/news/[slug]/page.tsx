@@ -219,18 +219,6 @@ export default function NewsPage() {
                             ))}
                         </div>
                     )}
-
-                    {/* Engagement Stats */}
-                    <div className="flex items-center gap-6 text-sm text-[#1B1B1B]/60">
-                        <div className="flex items-center gap-1">
-                            <Eye className="h-4 w-4" />
-                            <span>{post.views || 0} views</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <Heart className="h-4 w-4" />
-                            <span>{post.upvotes || 0} likes</span>
-                        </div>
-                    </div>
                 </header>
 
                 {/* Cover image */}

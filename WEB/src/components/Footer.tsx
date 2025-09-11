@@ -13,8 +13,8 @@ const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     {/* Brand Section */}
                     <div className="flex flex-col">
-                        <p className="text-2xl font-bold mb-2">It Happens In Kota</p>
-                        <p className="text-[#F7C948] mb-4">A community by students, for students</p>
+                        <p className="text-2xl font-bold mb-2">Ihoik Media</p>
+                        <p className="text-[#F7C948] mb-4"></p>
                         <div className="flex space-x-4">
                             <Link
                                 href="https://www.instagram.com/ithappensinkota/"
@@ -110,7 +110,7 @@ const Footer: React.FC = () => {
                             rel="noopener noreferrer"
                             className="hover:text-[#F7C948] transition-colors"
                         >
-                            It Happens In Kota Team
+                            ihoik Media Team
                         </a>
                     </p>
                 </div>

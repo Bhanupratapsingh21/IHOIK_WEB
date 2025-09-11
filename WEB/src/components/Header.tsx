@@ -21,97 +21,102 @@ const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Listen to scroll and update scrolled state
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-
-    // Cleanup
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-300 ${scrolled
-        ? 'bg-[#F7C948]/70 backdrop-blur-md shadow-md'  // Glassy background when scrolled
-        : 'bg-transparent'
-        }`}
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'md:bg-white/90 backdrop-blur-md shadow-md rounded-full border border-gray-100'
+          : 'md:bg-white/80 backdrop-blur-sm shadow-sm rounded-full border border-gray-100'
+      }`}
+      style={{ width: '95%', maxWidth: '1200px' }}
     >
       <Container className="!px-0">
-        <nav className="mx-auto flex justify-between items-center py-2 px-5 md:py-6">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-
-            <span className="manrope font-sans  text-xl font-semibold text-foreground cursor-pointer">
-              IHOIK
-            </span>
-          </Link>
+        <nav className="mx-auto flex justify-between items-center py-2 px-5 md:py-3">
+          {/* Left Logo */}
+          <div className="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+            <Image
+              src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
+              alt="IHOIK Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
 
           {/* Desktop Menu */}
-          <ul className="hidden md:flex space-x-8 text-lg font-medium">
+          <ul className="hidden md:flex space-x-6 text-sm font-medium">
             {menuItems.map(item => (
               <li key={item.text}>
                 <Link
                   href={item.url}
-                  className="text-foreground hover:text-primary transition-colors"
+                  className="text-gray-700 hover:text-[#F7C948] transition-colors font-semibold"
                 >
                   {item.text}
                 </Link>
               </li>
             ))}
-
           </ul>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center ml-auto space-x-2">
             <button
               onClick={toggleMenu}
               type="button"
-              className="bg-primary text-white focus:outline-none rounded-full w-10 h-10 flex items-center justify-center"
+              className="bg-[#F7C948] text-gray-800 focus:outline-none rounded-full w-10 h-10 flex items-center justify-center shadow-sm"
               aria-controls="mobile-menu"
               aria-expanded={isOpen}
             >
-              {isOpen ? (
-                <HiOutlineXMark className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <HiBars3 className="h-6 w-6" aria-hidden="true" />
-              )}
+              {isOpen ? <HiOutlineXMark className="h-6 w-6" /> : <HiBars3 className="h-6 w-6" />}
               <span className="sr-only">Toggle navigation</span>
             </button>
           </div>
         </nav>
       </Container>
 
-      {/* Mobile Menu with Transition */}
+      {/* Mobile Menu */}
       <Transition
         show={isOpen}
         enter="transition ease-out duration-200 transform"
-        enterFrom="opacity-0 scale-95"
-        enterTo="opacity-100 scale-100"
-        leave="transition ease-in duration-75 transform"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-95"
+        enterFrom="opacity-0 -translate-y-4"
+        enterTo="opacity-100 translate-y-0"
+        leave="transition ease-in duration-150 transform"
+        leaveFrom="opacity-100 translate-y-0"
+        leaveTo="opacity-0 -translate-y-4"
       >
-        <div id="mobile-menu" className="md:hidden bg-[#F7C948] shadow-lg">
-          <ul className="flex flex-col space-y-4 pt-2 pb-6 px-6 text-base font-medium">
+        <div
+          id="mobile-menu"
+          className="md:hidden bg-white/90 backdrop-blur-md shadow-md rounded-2xl mx-4 mt-2 border border-gray-100"
+        >
+          <div className="flex justify-center py-4 border-b border-gray-100">
+            <div className="relative w-10 h-10">
+              <Image
+                src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
+                alt="IHOIK Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+          <ul className="flex flex-col space-y-1 pt-2 pb-4 px-4 text-base font-medium">
             {menuItems.map(item => (
               <li key={item.text}>
                 <Link
                   href={item.url}
-                  className="text-foreground hover:text-primary block"
+                  className="text-gray-700 hover:text-[#F7C948] hover:bg-gray-50/50 block py-3 px-4 rounded-lg transition-colors"
                   onClick={toggleMenu}
                 >
                   {item.text}
                 </Link>
               </li>
             ))}
-
           </ul>
         </div>
       </Transition>

@@ -1,6 +1,6 @@
 export const siteDetails = {
-  siteName: 'It Happens Only In Kota',
-  siteUrl: 'https://ihioik.com/',
+  siteName: 'It Happens Only In Kota Media',
+  siteUrl: 'https://ihoikmedia.com/',
   metadata: {
     title: 'It Happens In Kota - Student Community and Support Platform',
     description: 'It Happens In Kota is a vibrant student platform offering stories, tips, and support for Kota’s academic and cultural life.',
