@@ -8,24 +8,24 @@ import { Instagram, Youtube } from 'lucide-react';
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-[#7A1C1C] text-white py-12">
+        <footer className="bg-[#F7C948] text-black py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     {/* Brand Section */}
                     <div className="flex flex-col">
                         <p className="text-2xl font-bold mb-2">Ihoik Media</p>
-                        <p className="text-[#F7C948] mb-4"></p>
+                        <p className="text-[#7A1C1C] mb-4"></p>
                         <div className="flex space-x-4">
                             <Link
                                 href="https://www.instagram.com/ithappensinkota/"
-                                className="text-white hover:text-[#F7C948] transition-colors"
+                                className="text-black hover:text-[#7A1C1C] transition-colors"
                                 aria-label="Instagram"
                             >
                                 <Instagram className="h-6 w-6" />
                             </Link>
                             <Link
                                 href="https://www.youtube.com/@ihoikmedia"
-                                className="text-white hover:text-[#F7C948] transition-colors"
+                                className="text-black hover:text-[#7A1C1C] transition-colors"
                                 aria-label="YouTube"
                             >
                                 <Youtube className="h-6 w-6" />
@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
                                 <li key={link.text}>
                                     <Link
                                         href={link.url}
-                                        className="text-white/80 hover:text-[#F7C948] transition-colors"
+                                        className="text-black hover:text-[#7A1C1C] transition-colors"
                                     >
                                         {link.text}
                                     </Link>
@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
                             {footerDetails.email && (
                                 <a
                                     href={`mailto:${footerDetails.email}`}
-                                    className="block text-white/80 hover:text-[#F7C948] transition-colors"
+                                    className="block text-black hover:text-[#7A1C1C] transition-colors"
                                 >
                                     Email: {footerDetails.email}
                                 </a>
@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
                             {footerDetails.telephone && (
                                 <a
                                     href={`tel:${footerDetails.telephone}`}
-                                    className="block text-white/80 hover:text-[#F7C948] transition-colors"
+                                    className="block text-black hover:text-[#7A1C1C] transition-colors"
                                 >
                                     Phone: {footerDetails.telephone}
                                 </a>
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
                                                     aria-label={platformName}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-white/80 hover:text-[#F7C948] transition-colors"
+                                                    className="text-black hover:text-[#7A1C1C] transition-colors"
                                                 >
                                                     {getPlatformIconByName(platformName)}
                                                 </Link>
@@ -99,16 +99,16 @@ const Footer: React.FC = () => {
 
                 {/* Copyright Section */}
                 <div className="border-t border-[#F7C948]/30 pt-8 text-center">
-                    <p className="text-white/80">
+                    <p className="text-[#7A1C1C]">
                         Copyright &copy; {new Date().getFullYear()} {siteDetails.siteName}. All rights reserved.
                     </p>
-                    <p className="text-sm mt-2 text-white/60">
-                        Made with <span className="text-[#F7C948]">♥</span> by{' '}
+                    <p className="text-sm mt-2 text-[#7A1C1C]">
+                        Made with <span className="text-[#7A1C1C]">♥</span> by{' '}
                         <a
                             href="https://ihioik.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-[#F7C948] transition-colors"
+                            className="hover:text-[#7A1C1C] transition-colors"
                         >
                             ihoik Media Team
                         </a>

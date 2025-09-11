@@ -127,6 +127,8 @@ export function PikaHero() {
       className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-6 md:py-10 lg:py-16 relative overflow-hidden"
       aria-labelledby="ihoik-title"
     >
+
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FFE580] rounded-full opacity-20 animate-float-1"></div>
@@ -138,10 +140,16 @@ export function PikaHero() {
       </div>
 
       <div className="relative z-10">
-        <div className="relative rounded-3xl border border-white/20 bg-gradient-to-br from-white to-white/95 shadow-2xl overflow-hidden backdrop-blur-sm">
+        <div className="relative rounded-3xl border border-white/20 bg-gradient-to-br from-white to-white/95 overflow-hidden backdrop-blur-sm">
           {/* Animated border */}
           <div className="absolute inset-0 rounded-3xl border border-transparent bg-clip-padding bg-origin-border animate-border-rotate">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#F7C948] via-[#8b3c3c] to-[#F7C948] bg-[length:200%_100%]"></div>
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#F7C948] to-[#F7C948] bg-[length:200%_100%]"></div>
+          </div>
+
+          <div className="absolute inset-0 overflow-hidden z-50">
+            <div className="absolute -top-10 -left-10 w-24 h-24 md:w-40 md:h-40 rounded-full bg-[#1B1B1B]/15 animate-pulse-slow"></div>
+            <div className="absolute -bottom-10 -right-10 w-24 h-24 md:w-40 md:h-40 rounded-full bg-[#1B1B1B]/15 animate-pulse-slow-delay-1"></div>
+            <div className="absolute top-1/2 left-1/4 w-12 h-12 md:w-20 md:h-20 rounded-full bg-[#1B1B1B]/15 animate-pulse-slow-delay-2"></div>
           </div>
 
           <div className="relative px-6 sm:px-8 pt-12 md:pt-16 lg:pt-20 pb-10 md:pb-14">
@@ -151,8 +159,8 @@ export function PikaHero() {
                 <Image
                   src="https://res.cloudinary.com/djwzwq4cu/image/upload/v1756566813/Ihoik_Media_logo_vdfkgo.png"
                   alt="IHOIK Media Logo"
-                  height={60}
-                  width={180}
+                  height={160}
+                  width={280}
                   className="object-contain"
                 />
               </div>
@@ -175,7 +183,7 @@ export function PikaHero() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 md:gap-16 items-center">
               {/* Left content */}
               <div className={`space-y-6 md:space-y-8 transition-all duration-1000 ease-out delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div>
@@ -221,13 +229,12 @@ export function PikaHero() {
                 </div>
               </div>
 
-              {/* Right content - Media showcase */}
               <div className={`relative transition-all duration-1000 ease-out delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                <div className="grid grid-cols-2 gap-4 md:gap-6">
+                <div className="flex justify-end w-full">
                   {/* Main media card */}
-                  <div className="relative h-80 w-full max-w-4xl mx-auto flex items-center justify-center">
-                    {/* Circular track background (optional visual element) */}
-                    <div className="absolute w-72 h-72 rounded-full border-2 border-dashed bg border-gray-200 opacity-50"></div>
+                  <div className="relative h-80 flex items-center justify-end w-full max-w-lg pr-10 mr-28">
+                    {/* Circular track */}
+                    <div className="absolute w-72 h-72 rounded-full border-2 border-dashed border-gray-200 opacity-50 right-5"></div>
 
                     {socialCards.map((card, index) => {
                       const Icon = card.icon
@@ -239,9 +246,9 @@ export function PikaHero() {
                           href={card.url}
                           className={`absolute transition-all duration-700 ease-in-out transform ${position} hover:scale-115 hover:z-30`}
                         >
-                          <div className="w-60 h-72 bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
+                          <div className="w-72 h-80 bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
                             {/* Card image */}
-                            <div className={`h-32 bg-gradient-to-r  relative overflow-hidden`}>
+                            <div className="h-32 relative overflow-hidden">
                               <img
                                 src={card.image}
                                 alt={card.platform}
@@ -256,13 +263,11 @@ export function PikaHero() {
                             <div className="p-5">
                               <h3 className="text-xl font-bold text-gray-800 mb-2">{card.platform}</h3>
                               <p className="text-gray-600 text-sm mb-4">{card.description}</p>
-
-                              <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                              <div className="flex items-center text-sm font-medium text-gray-700 group-hover:text-[#7A1C1C] transition-colors">
                                 <span>Visit {card.platform}</span>
                                 <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                               </div>
                             </div>
-
                             {/* Hover overlay */}
                             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl"></div>
                           </div>
@@ -271,20 +276,21 @@ export function PikaHero() {
                     })}
 
                     {/* Navigation dots */}
-                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    <div className="absolute -bottom-10 right-0 mr-28 flex space-x-2">
                       {socialCards.map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setActiveIndex(index)}
-                          className={`w-3 h-3 rounded-full transition-all ${index === activeIndex ? 'bg-blue-600 scale-125' : 'bg-gray-300'}`}
+                          className={`w-3 h-3 rounded-full transition-all ${index === activeIndex ? 'bg-[#7A1C1C] scale-125' : 'bg-gray-300'}`}
                           aria-label={`Show ${socialCards[index].platform} card`}
                         />
                       ))}
                     </div>
                   </div>
-
                 </div>
               </div>
+
+
             </div>
           </div>
         </div>
@@ -336,6 +342,30 @@ export function PikaHero() {
         .animate-float-element-2 {
           animation: float-element-2 6s ease-in-out infinite 1s;
         }
+
+        @keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-pulse-slow-delay-1 {
+  animation: pulse-slow 4s ease-in-out infinite 1s;
+}
+
+.animate-pulse-slow-delay-2 {
+  animation: pulse-slow 4s ease-in-out infinite 2s;
+}
+
       `}</style>
     </section>
   )
