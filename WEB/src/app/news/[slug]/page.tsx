@@ -137,7 +137,7 @@ export default function NewsPage() {
 
     if (!post) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20 flex items-center justify-center px-4">
+            <div className="min-h-screen pt-20 bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20 flex items-center justify-center px-4">
                 <div className="text-center bg-white p-8 rounded-2xl shadow-md border border-[#F7C948]/20 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-[#7A1C1C] mb-4">Post Not Found</h2>
                     <p className="text-[#1B1B1B]/80 mb-6">The news you're looking for doesn't exist.</p>
@@ -154,7 +154,7 @@ export default function NewsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
+        <div className="min-h-screen pt-20 bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
             <div className="max-w-4xl mx-auto px-4 py-8 lg:py-12">
                 {/* Back button */}
                 <div className="mb-8">

@@ -21,7 +21,7 @@ export default function AboutPage() {
   }, [])
 
   return (
-    <div className="min-h-screen pt-10 bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
+    <div className="min-h-screen pt-20 bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
 
         {/* Hero Section */}

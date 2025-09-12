@@ -59,11 +59,11 @@ export function VideoCarousel() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full max-w-7xl mx-auto rounded-xl px-4 py-8">
       {/* Continuous scrolling carousel */}
       <div
         ref={carouselRef}
-        className="flex overflow-x-hidden py-6 space-x-6 scrollbar-hide"
+        className="flex overflow-x-hidden pt-6 rounded-xl space-x-6 scrollbar-hide"
         style={{ scrollBehavior: "auto" }}
       >
         {duplicatedVideos.map((video, index) => (
@@ -111,16 +111,6 @@ export function VideoCarousel() {
                     </div>
                   </>
                 )}
-              </div>
-
-              {/* Video title */}
-              <div className="p-3 sm:p-4 md:p-6 bg-gradient-to-b from-gray-900 to-black">
-                <h3 className="text-white font-semibold text-base sm:text-lg md:text-xl truncate">
-                  {video.title}
-                </h3>
-                <p className="text-gray-400 text-xs sm:text-sm md:text-base mt-1">
-                  Click to {activeVideo === video.youtubeId ? "close" : "play"}
-                </p>
               </div>
             </div>
           </div>

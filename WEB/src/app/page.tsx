@@ -8,19 +8,21 @@ import Container from "@/components/Container";
 import Section from "@/components/Section";
 import Stats from "@/components/Stats";
 import CTA from "@/components/CTA";
-import { PikaHero } from "@/components/Home/pika-hero";
+import PikaHero  from "@/components/Home/pika-hero";
 import { VideoCarousel } from "@/components/ui/carousel";
 import { AppFamilySection } from "@/components/Family";
+import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 
 const HomePage: React.FC = () => {
   return (
     <>
       <main className="min-h-dvh pt-14 bg-[#F7C948] text-[#1B1B1B]">
+        
         <PikaHero />
       </main>
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto">
-          <div className="text-center mb-10">
+          <div className="text-center mb-5">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Featured Videos
             </h2>

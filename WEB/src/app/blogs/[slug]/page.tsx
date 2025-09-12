@@ -152,7 +152,7 @@ export default function BlogPage() {
 
     if (!post) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20 flex items-center justify-center px-4">
+            <div className="min-h-screen pt-20 bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20 flex items-center justify-center px-4">
                 <div className="text-center bg-white p-8 rounded-2xl shadow-md border border-[#F7C948]/20 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-[#7A1C1C] mb-4">Post Not Found</h2>
                     <p className="text-[#1B1B1B]/80 mb-6">The blog page you're looking for doesn't exist.</p>
@@ -169,13 +169,13 @@ export default function BlogPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
+        <div className="min-h-screen pt-20 bg-gradient-to-b from-[#FEF6E6] to-[#F7C948]/20">
             {/* Decorative elements */}
             <div className="max-w-4xl mx-auto px-4 py-8 lg:py-12 relative z-10">
                 {/* Back button */}
                 <div className="mb-8">
                     <Link
-                        href="/news"
+                        href="/blogs"
                         className="inline-flex items-center gap-2 text-[#7A1C1C] hover:text-[#5e1515] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#F7C948]/10 group"
                     >
                         <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
