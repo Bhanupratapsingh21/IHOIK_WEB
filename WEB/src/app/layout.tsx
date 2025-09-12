@@ -15,6 +15,11 @@ const sourceSans = Source_Sans_3({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: siteDetails.metadata.title,
   description: siteDetails.metadata.description,
+  icons: {
+    icon: "https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png",
+    shortcut: "https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png",
+    apple: "https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png",
+  },
   openGraph: {
     title: siteDetails.metadata.title,
     description: siteDetails.metadata.description,
@@ -47,7 +52,7 @@ export default function RootLayout({
       <body
         className={`${manrope.className} ${sourceSans.className} antialiased`}
       >
-
+        <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
         <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
 
         {siteDetails.googleAnalyticsId && <GoogleAnalytics gaId={siteDetails.googleAnalyticsId} />}
