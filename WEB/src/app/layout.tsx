@@ -8,6 +8,9 @@ import { siteDetails } from '@/data/siteDetails';
 
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import FooterNav from "@/components/New/footer-nav";
+import SiteFooter from "@/components/New/Fotter";
+import SiteHeader from "@/components/New/site.header";
 
 const manrope = Manrope({ subsets: ['latin'] });
 const sourceSans = Source_Sans_3({ subsets: ['latin'] });
@@ -48,20 +51,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className="dark antialiased" lang="en">
       <body
-        className={`${manrope.className} ${sourceSans.className} antialiased`}
+        className={`${manrope.className} ${sourceSans.className} bg-black antialiased`}
       >
         <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
         <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
 
         {siteDetails.googleAnalyticsId && <GoogleAnalytics gaId={siteDetails.googleAnalyticsId} />}
         <AuthProvider>
-          <Header />
+          <SiteHeader/>
           <main>
             {children}
           </main>
-          <Footer />
+         <SiteFooter/>
         </AuthProvider>
       </body>
     </html>
