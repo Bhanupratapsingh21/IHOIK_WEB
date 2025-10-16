@@ -97,7 +97,7 @@ export default function FooterNav() {
 
   return (
     <motion.footer 
-      className="mt-auto w-full"
+      className="mt-auto w-full md:hidden"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}

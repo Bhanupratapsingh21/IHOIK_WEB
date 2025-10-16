@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
+import { LayoutTextFlip } from "../ui/layout-text-flip";
 
 export default function Hero() {
   const ref = useRef(null)
@@ -97,66 +98,60 @@ export default function Hero() {
   return (
     <motion.section
       ref={ref}
-      className="w-full mx-auto md:pt-12 pt-44 pb-10 flex flex-col items-center gap-6 sm:gap-7 max-w-[min(92vw,720px)]"
+      className="w-full mx-auto py-8 md:py-12 lg:py-20 px-4 sm:px-6 lg:px-8 flex flex-col-reverse md:flex-row items-center gap-8 lg:gap-12 max-w-7xl"
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
-      {/* Image with enhanced animations */}
+      {/* Text Content - Left side on desktop, bottom on mobile */}
       <motion.div
-        className="relative"
+        className="w-full md:w-1/2 flex flex-col md:items-start md:text-left text-center"
+        variants={textVariants}
+      >
+        <div className="w-full md:text-left  text-center">
+          <LayoutTextFlip
+            text="We work to boost"
+            words={["Future", "Hope", "Education"]}
+          />
+        </div>
+
+      </motion.div>
+
+      {/* Image Content - Right side on desktop, top on mobile - Made smaller */}
+      <motion.div
+        className="w-full md:w-1/2 flex justify-center md:justify-end"
         variants={imageVariants}
         whileHover={{
           scale: 1.02,
           transition: { type: "spring", stiffness: 300, damping: 20 }
         }}
       >
-        <motion.img
-          src="https://images.unsplash.com/photo-1760104611482-ad5888098365?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3fHx8ZW58MHx8fHx8&auto=format&fit=crop&q=60&w=600"
-          alt="Person reading a book in a library"
-          className="w-full max-w-[560px] aspect-[4/3]  object-cover rounded-2xl sm:rounded-[28px] md:rounded-[32px] grayscale shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:grayscale-0 transition-all duration-700 cursor-pointer"
-          sizes="(min-width: 1024px) 560px, (min-width: 640px) 480px, 90vw"
-          whileHover={{
-            boxShadow: "0 25px 60px rgba(0,0,0,0.5)"
-          }}
-        />
+        <div className="relative w-full max-w-sm lg:max-w-md xl:max-w-lg">
+          <motion.img
+            src="https://images.unsplash.com/photo-1760104611482-ad5888098365?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3fHx8ZW58MHx8fHx8&auto=format&fit=crop&q=60&w=600"
+            alt="Person reading a book in a library"
+            className="w-full aspect-square object-cover rounded-2xl lg:rounded-3xl grayscale shadow-2xl hover:grayscale-0 transition-all duration-700 cursor-pointer"
+            sizes="(min-width: 1024px) 448px, (min-width: 768px) 336px, 300px"
+            whileHover={{
+              boxShadow: "0 25px 60px rgba(0,0,0,0.5)"
+            }}
+          />
 
-        {/* Animated border glow */}
-        <motion.div
-          className="absolute inset-0 rounded-2xl sm:rounded-[28px] md:rounded-[32px] border-2 pointer-events-none"
-          style={{ borderColor: "rgba(255,255,255,0.1)" }}
-          animate={{
-            boxShadow: [
-              "0 0 20px rgba(255,255,255,0.1)",
-              "0 0 30px rgba(255,255,255,0.2)",
-              "0 0 20px rgba(255,255,255,0.1)"
-            ]
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
-        />
+          {/* Animated border glow */}
+          <motion.div
+            className="absolute inset-0 rounded-2xl lg:rounded-3xl border-2 pointer-events-none"
+            style={{ borderColor: "rgba(255,255,255,0.1)" }}
+            animate={{
+              boxShadow: [
+                "0 0 20px rgba(255,255,255,0.1)",
+                "0 0 30px rgba(255,255,255,0.2)",
+                "0 0 20px rgba(255,255,255,0.1)"
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+        </div>
       </motion.div>
-
-      {/* Heading with enhanced animations */}
-      <motion.h1
-        className="text-center text-white font-semibold text-4xl sm:text-3xl md:text-5xl lg:text-6xl  text-pretty px-4"
-        variants={textVariants}
-      >
-        {"We work to boost"}{" "}
-        <motion.span
-          className="inline-block rounded-full px-2.5 py-1 md:px-3 md:py-1.5 lg:px-4 lg:py-2 shadow-[0_4px_0_rgba(0,0,0,0.2)] relative"
-          style={{
-            backgroundColor: "var(--brand-yellow)",
-            color: "var(--on-brand)",
-          }}
-          variants={highlightVariants}
-          whileHover="hover"
-          animate={floatingAnimation}
-        >
-          {"future"}
-
-        
-        </motion.span>
-      </motion.h1>
     </motion.section>
   )
 }

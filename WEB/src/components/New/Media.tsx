@@ -45,10 +45,44 @@ export default function MediaPresence() {
   const [isPaused, setIsPaused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  // Enhanced animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+  const statVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 15
+      }
+    },
+    hover: {
+      scale: 1.05,
+      y: -5,
+      backgroundColor: "rgba(255,255,255,0.15)",
+      boxShadow: "0 20px 40px rgba(255,193,7,0.2)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17
+      }
+    }
+  }
+
   return (
     <section className="relative mx-auto w-full max-w-[min(92vw,1200px)] px-4 py-16 overflow-hidden">
       {/* Header */}
-      <motion.header 
+      <motion.header
         className="mb-12 text-center"
         initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +92,7 @@ export default function MediaPresence() {
         <h2 className="text-pretty text-2xl font-bold tracking-wide text-white md:text-3xl">
           MEDIA PRESENCE
         </h2>
-        <motion.div 
+        <motion.div
           className="mx-auto mt-3 h-1 w-24 rounded-full bg-[var(--brand-yellow)]"
           initial={{ width: 0 }}
           whileInView={{ width: 96 }}
@@ -68,13 +102,13 @@ export default function MediaPresence() {
       </motion.header>
 
       {/* Sliding Logos Container */}
-      <div 
+      <div
         className="relative"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        
-        
+
+
         {/* Sliding Logos */}
         <motion.div
           ref={containerRef}
@@ -94,7 +128,7 @@ export default function MediaPresence() {
             <motion.div
               key={`${logo.name}-${index}`}
               className="flex-shrink-0 group"
-              whileHover={{ 
+              whileHover={{
                 scale: 1.1,
                 y: -5,
                 transition: { type: "spring", stiffness: 400, damping: 17 }
@@ -115,46 +149,59 @@ export default function MediaPresence() {
         </motion.div>
       </div>
 
-      {/* Description */}
+      {/* Enhanced Description */}
       <motion.div
-        className="text-center mt-12"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-      >
-        <p className="text-white/80 text-lg max-w-2xl mx-auto leading-relaxed">
-          Featured and recognized by leading media outlets worldwide for our innovative approach and outstanding results.
-        </p>
-      </motion.div>
-
-      {/* Stats */}
-      <motion.div
-        className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-2xl mx-auto"
+        className="text-center mb-16 lg:mb-20"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.7, duration: 0.6, staggerChildren: 0.1 }}
+        transition={{ delay: 0.3, duration: 0.8, type: "spring" }}
+      >
+        <p className="text-2xl lg:text-3xl text-white/90 max-w-4xl mx-auto leading-relaxed font-light">
+          Featured and recognized by{" "}
+          <span className="text-yellow-400 font-semibold">leading media outlets</span> worldwide
+          for our innovative approach and outstanding results in the industry.
+        </p>
+      </motion.div>
+
+      {/* Enhanced Stats Grid */}
+      <motion.div
+        className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-5xl mx-auto"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={containerVariants}
       >
         {[
-          { number: "50+", label: "Media Features" },
-          { number: "1M+", label: "Impressions" },
-          { number: "20+", label: "Countries" },
-          { number: "95%", label: "Positive Coverage" },
+          { number: "50+", label: "Media Features", delay: 0 },
+          { number: "1M+", label: "Impressions", delay: 0.1 },
+          { number: "20+", label: "Countries", delay: 0.2 },
+          { number: "95%", label: "Positive Coverage", delay: 0.3 },
         ].map((stat, index) => (
           <motion.div
             key={stat.label}
-            className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
-            whileHover={{ 
-              scale: 1.05,
-              backgroundColor: "rgba(255,255,255,0.1)",
-              transition: { type: "spring", stiffness: 300, damping: 20 }
-            }}
+            className="text-center p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 relative overflow-hidden group"
+            variants={statVariants}
+            whileHover="hover"
+            custom={index}
           >
-            <div className="text-2xl font-bold text-[var(--brand-yellow)] mb-2">
+            {/* Animated Background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-transparent opacity-0 group-hover:opacity-100"
+              transition={{ duration: 0.5 }}
+            />
+
+            {/* Shine Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+
+            <motion.div
+              className="text-3xl lg:text-4xl font-bold text-yellow-400 mb-3 relative z-10"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
+            >
               {stat.number}
-            </div>
-            <div className="text-white/70 text-sm">
+            </motion.div>
+            <div className="text-white/80 text-lg font-medium relative z-10">
               {stat.label}
             </div>
           </motion.div>

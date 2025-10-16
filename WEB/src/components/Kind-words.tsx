@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { AnimatedTestimonials } from "./ui/animated-testimonials"
 
 type Testimonial = {
     name: string
@@ -9,6 +10,43 @@ type Testimonial = {
     avatar: string
 }
 
+const testimonials = [
+    {
+        quote:
+            "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
+        name: "Sarah Chen",
+        designation: "Product Manager at TechFlow",
+        src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+        quote:
+            "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
+        name: "Michael Rodriguez",
+        designation: "CTO at InnovateSphere",
+        src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+        quote:
+            "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
+        name: "Emily Watson",
+        designation: "Operations Director at CloudScale",
+        src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+        quote:
+            "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
+        name: "James Kim",
+        designation: "Engineering Lead at DataPro",
+        src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+        quote:
+            "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
+        name: "Lisa Thompson",
+        designation: "VP of Technology at FutureNet",
+        src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+];
 const TESTIMONIALS: Testimonial[] = [
     {
         name: "Jane Doe",
@@ -114,197 +152,7 @@ export default function KindWords() {
                 />
             </motion.header>
 
-            {/* Enhanced layered card stack background with rounded sides */}
-            <div className="pointer-events-none relative mx-auto mb-8 w-full max-w-lg">
-                {/* Bottom cards with rounded side effects */}
-                <motion.div
-                    className="absolute left-1/2 top-1/2 -z-10 h-40 w-72 -translate-x-1/2 -translate-y-1/2 rotate-[-8deg] rounded-2xl border-2 border-white/20 bg-black/20 backdrop-blur-sm"
-                    animate={{
-                        y: [0, -5, 0],
-                        rotate: [-8, -10, -8]
-                    }}
-                    transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
-                <motion.div
-                    className="absolute left-1/2 top-1/2 -z-10 h-40 w-72 -translate-x-1/2 -translate-y-1/2 rotate-[4deg] rounded-2xl border-2 border-white/15 bg-black/15 backdrop-blur-sm"
-                    animate={{
-                        y: [0, -3, 0],
-                        rotate: [4, 6, 4]
-                    }}
-                    transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.5
-                    }}
-                />
-                <motion.div
-                    className="absolute left-1/2 top-1/2 -z-10 h-40 w-72 -translate-x-1/2 -translate-y-1/2 rotate-[12deg] rounded-2xl border-2 border-white/10 bg-black/10 backdrop-blur-sm"
-                    animate={{
-                        y: [0, -2, 0],
-                        rotate: [12, 14, 12]
-                    }}
-                    transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1
-                    }}
-                />
-
-                {/* SVG background effects */}
-                <svg className="absolute inset-0 -z-20 h-full w-full opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <defs>
-                        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="var(--brand-yellow)" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="var(--brand-yellow)" stopOpacity="0" />
-                        </radialGradient>
-                    </defs>
-                    <ellipse cx="50" cy="50" rx="40" ry="20" fill="url(#glow)" />
-                </svg>
-            </div>
-
-            <div className="relative">
-                {/* Main slider viewport */}
-                <div className="relative min-h-[240px]">
-                    <AnimatePresence mode="popLayout" custom={direction}>
-                        <motion.article
-                            key={index}
-                            custom={direction}
-                            variants={cardVariants}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            aria-roledescription="slide"
-                            className="grid grid-cols-[auto_1fr] items-center gap-6 rounded-2xl border border-white/20 bg-black/40 p-6 shadow-2xl backdrop-blur-sm"
-                        >
-                            {/* Avatar with enhanced styling */}
-                            <motion.div
-                                className="relative"
-                                whileHover={{ scale: 1.1 }}
-                                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                            >
-                                <img
-                                    src={items[index].avatar || "/placeholder.svg"}
-                                    alt={`${items[index].name} avatar`}
-                                    className="h-20 w-20 rounded-full object-cover ring-2 ring-[var(--brand-yellow)] md:h-24 md:w-24"
-                                />
-                                {/* Active indicator */}
-                                <motion.div
-                                    className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-[var(--brand-yellow)]"
-                                    animate={{ scale: [1, 1.2, 1] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                />
-                            </motion.div>
-
-                            {/* Content */}
-                            <div className="min-w-0">
-                                <h3 className="text-sm font-extrabold tracking-wide text-white md:text-base">
-                                    {items[index].name.toUpperCase()}
-                                </h3>
-                                <motion.p
-                                    className="mt-3 text-sm leading-6 text-white/80 md:text-[15px]"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                >
-                                    "{items[index].quote}"
-                                </motion.p>
-                            </div>
-
-                            {/* Enhanced decorative elements */}
-                            <motion.span
-                                aria-hidden
-                                className="absolute -left-2 -top-2 text-[var(--brand-yellow)] text-xl"
-                                animate={{ rotate: [0, 180, 360] }}
-                                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                            >
-                                {"✦"}
-                            </motion.span>
-                            <motion.span
-                                aria-hidden
-                                className="absolute -right-2 -bottom-2 text-[var(--brand-yellow)] text-xl"
-                                animate={{ rotate: [360, 180, 0] }}
-                                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                            >
-                                {"✦"}
-                            </motion.span>
-
-                            {/* Quote marks */}
-                            <motion.div
-                                className="absolute -left-3 -top-3 text-4xl text-[var(--brand-yellow)] opacity-50"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ delay: 0.3 }}
-                            >
-                                "
-                            </motion.div>
-                        </motion.article>
-                    </AnimatePresence>
-                </div>
-
-                {/* Enhanced controls */}
-                <motion.div
-                    className="mt-8 flex items-center justify-center gap-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                >
-                    <motion.button
-                        type="button"
-                        aria-label="Previous testimonial"
-                        onClick={() => paginate(-1)}
-                        className="rounded-full border border-white/30 bg-black/40 p-3 text-white backdrop-blur-sm transition-all hover:bg-[var(--brand-yellow)] hover:text-black hover:border-[var(--brand-yellow)]"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                    >
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </motion.button>
-
-                    {/* Progress indicators */}
-                    <div className="flex gap-2">
-                        {items.map((_, i) => (
-                            <motion.button
-                                key={i}
-                                onClick={() => setIndex(i)}
-                                className="focus:outline-none"
-                                aria-label={`Go to testimonial ${i + 1}`}
-                                whileHover={{ scale: 1.2 }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <motion.div
-                                    className={`h-2 rounded-full transition-all ${i === index
-                                            ? "bg-[var(--brand-yellow)] w-6"
-                                            : "bg-white/30 w-2 hover:bg-white/50"
-                                        }`}
-                                    initial={{ width: i === index ? 24 : 8 }}
-                                    animate={{ width: i === index ? 24 : 8 }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                                />
-                            </motion.button>
-                        ))}
-                    </div>
-
-                    <motion.button
-                        type="button"
-                        aria-label="Next testimonial"
-                        onClick={() => paginate(1)}
-                        className="rounded-full border border-white/30 bg-black/40 p-3 text-white backdrop-blur-sm transition-all hover:bg-[var(--brand-yellow)] hover:text-black hover:border-[var(--brand-yellow)]"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                    >
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </motion.button>
-                </motion.div>
-            </div>
+            <AnimatedTestimonials testimonials={testimonials} />;
         </section>
     )
 }

@@ -16,7 +16,7 @@ export default function SiteFooter() {
   }
 
   return (
-    <footer className="w-full rounded-2xl border-t-4 bg-white mx-auto pt-5 pb-5 px-4">
+    <footer className="w-full rounded-2xl border-t-4 bg-black mx-auto pt-5 pb-5 px-4">
       <div className="rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.45)] ring-1 ring-border bg-[oklch(0.16_0_0)]">
         {/* Newsletter band */}
         <div className="footer-newsletter-gradient p-5 sm:p-6 md:p-7 border-b border-border">
