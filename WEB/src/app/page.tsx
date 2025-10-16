@@ -5,7 +5,7 @@ import WeCare from "@/components/New/wecare"
 import AdvertiseWithUs from "@/components/banifitCard"
 import KindWords from "@/components/Kind-words"
 import OurStory from "@/components/New/Ourstory"
-import Missout from "@/components/missout"
+import { AutoScrollYouTube } from '@/components/missout';
 import Achievements from "@/components/New/achievements"
 import ContactUs from "@/components/contectus"
 import MediaPresence from "@/components/New/Media"
@@ -27,10 +27,11 @@ export default function Page() {
         <WeCare />
         <AdvertiseWithUs />
         <KindWords />
-        <MediaPresence/>
+        <MediaPresence />
         <OurStory />
         <Achievements />
-        <Missout />
+        <AutoScrollYouTube />
+
         <ContactUs />
 
       </div>
