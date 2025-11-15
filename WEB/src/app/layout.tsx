@@ -54,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="dark antialiased" lang="en">
+    <html suppressHydrationWarning className="dark antialiased" lang="en">
       <body
         className={` ${GeistSans.variable} ${GeistMono.variable} ${manrope.className} ${sourceSans.className} bg-black antialiased`}
       >

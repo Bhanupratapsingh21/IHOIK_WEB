@@ -77,11 +77,10 @@ export default function SiteHeader() {
     }, [open])
 
     const menuItems = [
-        { label: "We Care", href: "#we-care" },
-        { label: "Events", href: "#events" },
-        { label: "Contact us", href: "#contact" },
-        { label: "Advertise with us", href: "#advertise" },
-        { label: "Our Productions", href: "#productions" },
+        { label: "Events", href: "/events" },
+        { label: "Contact us", href: "/contactus" },
+        { label: "About", href: "/about" },
+        { label: "Our Productions", href: "/production" },
     ]
 
     const hotItems = [
@@ -139,7 +138,7 @@ export default function SiteHeader() {
     return (
         <>
             <motion.header
-                className={`sticky top-0 z-40 w-full transition-all duration-300 ${scrolled
+                className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
                     ? "border-b border-white/20 bg-black/80 backdrop-blur-xl"
                     : "border-b border-white/10 bg-transparent backdrop-blur-md"
                     }`}
