@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Source_Sans_3, Manrope } from "next/font/google";
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { siteDetails } from '@/data/siteDetails';
-
+import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
-import FooterNav from "@/components/New/footer-nav";
 import SiteFooter from "@/components/New/Fotter";
 import SiteHeader from "@/components/New/site.header";
 
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+
 const manrope = Manrope({ subsets: ['latin'] });
 const sourceSans = Source_Sans_3({ subsets: ['latin'] });
+
+
 
 export const metadata: Metadata = {
   title: siteDetails.metadata.title,
@@ -53,18 +56,18 @@ export default function RootLayout({
   return (
     <html className="dark antialiased" lang="en">
       <body
-        className={`${manrope.className} ${sourceSans.className} bg-black antialiased`}
+        className={` ${GeistSans.variable} ${GeistMono.variable} ${manrope.className} ${sourceSans.className} bg-black antialiased`}
       >
         <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
         <link rel="shortcut icon" href="https://res.cloudinary.com/djwzwq4cu/image/upload/v1757005747/98bccfeb-83f1-483c-a1f6-bfe4e97ef3ad.png" type="image/x-icon" />
 
         {siteDetails.googleAnalyticsId && <GoogleAnalytics gaId={siteDetails.googleAnalyticsId} />}
         <AuthProvider>
-          <SiteHeader/>
+          <SiteHeader />
           <main>
             {children}
           </main>
-         <SiteFooter/>
+          <SiteFooter />
         </AuthProvider>
       </body>
     </html>
