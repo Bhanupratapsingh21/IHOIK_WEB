@@ -16,7 +16,7 @@ export default function SiteFooter() {
   }
 
   return (
-    <footer className="w-full rounded-2xl border-t-4 bg-black mx-auto pt-5 pb-5 px-4">
+    <footer className="w-full rounded-2xl border-t-4 bg-white mx-auto pt-5 pb-5 px-4">
       <div className="rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.45)] ring-1 ring-border bg-[oklch(0.16_0_0)]">
         {/* Newsletter band */}
         <div className="footer-newsletter-gradient p-5 sm:p-6 md:p-7 border-b border-border">
@@ -48,7 +48,7 @@ export default function SiteFooter() {
         <div className="p-5 sm:p-6 md:p-7">
           {/* Brand + Socials */}
           <div>
-            <h4 className="text-lg sm:text-xl font-extrabold text-white tracking-wide">IOHIK MEDIA</h4>
+            <h4 className="text-lg sm:text-xl font-black text-white tracking-wide">IOHIK MEDIA</h4>
             <p className="mt-2 text-sm leading-relaxed text-white/85 max-w-prose">
               Morbi non aliquam libero, eu aliquet erat. Nulla sed elementum nulla. Donec elit ligula.
             </p>
